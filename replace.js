@@ -43,7 +43,7 @@ function runReplace_inner(arrPage, iPage=0, arrReplace, section) {
 function initReplace(url) {
   fetch(url).then((response) => {
     response.text().then(function(text) {
-      try { data = JSON.parse(text.split('<desc>')[1].split('</desc>')[0]); } catch { return result; }
+      try { data = JSON.parse(text.split('<desc>')[1].split('</desc>')[0]); } catch { return; }
       result.graph.arrReplace = initReplace_inner(data['grapheme-map'], result.graph.section);
       result.phone.arrReplace = initReplace_inner(data['phoneme-map'], result.phone.section);
     });
