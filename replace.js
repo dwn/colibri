@@ -50,12 +50,23 @@ function initReplace(url) {
   });
 }
 function runReplace(result, text, iPage=0) {
-  if (!Array.isArray(result.graph.text = text)) result.graph.text = [result.graph.text];
-  if (!Array.isArray(result.phone.text = text)) result.phone.text = [result.phone.text];
+  result.page = iPage;
+  if (!Array.isArray(text)) {
+    result.text = [text];
+    result.graph.text = [text];
+    result.phone.text = [text];
+  } else {
+    result.text = [text[iPage]];
+    result.graph.text = [text[iPage]];
+    result.phone.text = [text[iPage]];
+  }
   runReplace_inner(result.graph.text, iPage, result.graph.arrReplace, result.graph.section);
   runReplace_inner(result.phone.text, iPage, result.phone.arrReplace, result.phone.section);
 }
 let data, result = { graph: { text: {}, arrReplace: {}, section: {} }, phone: { text: {}, arrReplace: {}, section: {} } };
 initReplace('https://dwn.github.io/common/lang/wfo.svg');
-setTimeout(() => {runReplace(result, data['user-text']) }, 1000);
-console.log(result);
+setTimeout(() => {
+  runReplace(result, data['user-text'])
+  console.log(result);
+  console.log(data);
+}, 1000);
