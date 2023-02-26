@@ -24,7 +24,7 @@ function runReplacementScript(arrPage, iPage=0, arrReplace, section) {
   let iLineSaved = 0;
   for(iLine=section.MAIN.firstLine+1; iLine<arrReplace.length; iLine++) { //Runs main section
     if (arrReplace[iLine].length==1 && arrReplace[iLine][0][0].split('\\-')[0]==='\\=\\=\\=\\=\\R\\U\\N') { //Potentially jumps to another section
-      const numRepetitions=arrReplace[iLine][0][0].split('\\-')[1].replaceAll('\\','');
+      let numRepetitions = arrReplace[iLine][0][0].replaceAll('\\','').split('-')[1];
       if (!numRepetitions) numRepetitions = 1;
       const sectionTitle = arrReplace[iLine][0][1];
       iLineSaved = iLine;
@@ -42,7 +42,7 @@ function runReplacementScript(arrPage, iPage=0, arrReplace, section) {
   removeEscaping(arrPage, iPage);
   restoreWhitespace(arrPage, iPage);
 }
-let url = 'https://dwn.github.io/common/lang/itlani.svg';
+let url = 'https://dwn.github.io/common/lang/wfo.svg';
 let iPage = 0;
 let result = { graph: { text: {}, arrReplace: {}, section: {} }, phone: { text: {}, arrReplace: {}, section: {} } };
 let data;
@@ -50,16 +50,12 @@ fetch(url).then(function(response) {
   response.text().then(function(text) {
     data = text.split('<desc>')[1].split('</desc>')[0];
     try { data = JSON.parse(data); } catch { return result; }
-
     result.graph.arrReplace = loadReplaceMap(data['grapheme-map'], result.graph.section);
     result.phone.arrReplace = loadReplaceMap(data['phoneme-map'], result.phone.section);
-
     if (!Array.isArray(result.graph.text = data['user-text'])) result.graph.text = [result.graph.text];
     if (!Array.isArray(result.phone.text = data['user-text'])) result.phone.text = [result.phone.text];
-
     runReplacementScript(result.graph.text, iPage, result.graph.arrReplace, result.graph.section);
     runReplacementScript(result.phone.text, iPage, result.phone.arrReplace, result.phone.section);
-
     console.log(result);
   });
 });
