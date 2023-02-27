@@ -51,22 +51,24 @@ function initReplace(url) {
 }
 function runReplace(result, text, iPage=0) {
   result.page = iPage;
-  if (!Array.isArray(text)) {
-    result.text = [text];
-    result.graph.text = [text];
-    result.phone.text = [text];
-  } else {
+  if (Array.isArray(text)) {
     result.text = [text[iPage]];
     result.graph.text = [text[iPage]];
     result.phone.text = [text[iPage]];
+  } else {
+    result.text = [text];
+    result.graph.text = [text];
+    result.phone.text = [text];
   }
-  runReplace_inner(result.graph.text, iPage, result.graph.arrReplace, result.graph.section);
-  runReplace_inner(result.phone.text, iPage, result.phone.arrReplace, result.phone.section);
+  runReplace_inner(result.graph.text, 0, result.graph.arrReplace, result.graph.section);
+  runReplace_inner(result.phone.text, 0, result.phone.arrReplace, result.phone.section);
 }
 let data, result = { graph: { text: {}, arrReplace: {}, section: {} }, phone: { text: {}, arrReplace: {}, section: {} } };
-initReplace('https://dwn.github.io/common/lang/wfo.svg');
+initReplace('https://dwn.github.io/common/lang/ignota.svg');
 setTimeout(() => {
-  runReplace(result, data['user-text'])
+  let arrPage = data['user-text'].split('{br}\n');
+  console.log(arrPage);
+  runReplace(result, arrPage, 1);
   console.log(result);
   console.log(data);
-}, 1000);
+}, 4000);

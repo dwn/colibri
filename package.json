@@ -1,0 +1,19 @@
+{
+  "name": "colibri",
+  "version": "1.0.0",
+  "description": "conlang composition app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dwn/colibri.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dwn/colibri/issues"
+  },
+  "homepage": "https://github.com/dwn/colibri#readme"
+}
