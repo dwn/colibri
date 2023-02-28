@@ -3,6 +3,8 @@ function addEscaping(arr, onlyIndex=-1) { generalInPlaceArrayFunction(arr, (s) =
 function removeEscaping(arr, onlyIndex=-1) { generalInPlaceArrayFunction(arr, (s) => { return s.replaceAll('\\',''); }, onlyIndex); }
 function symbolizeWhitespace(arr) { return generalInPlaceArrayFunction(arr, (s) => { return '_🛑_' + s.replace(/\n/g,'_⚠_').replaceAll(' ','_') + '_🛑_'; }); }
 function restoreWhitespace(arr) { return generalInPlaceArrayFunction(arr, (s) => { return s.replaceAll('_🛑_','').replaceAll('_🛑','').replaceAll('🛑_','').replaceAll('🛑','').replaceAll('_⚠_','\n').replaceAll('_⚠','\n').replaceAll('⚠_','\n').replaceAll('⚠','\n').replaceAll('_',' '); }); }
+function initData(url) { fetch(url).then((res) => { res.text().then((text) => { try { data = JSON.parse(text.split('<desc>')[1].split('</desc>')[0]); } catch {} }); }); }
+/////////////////////////////////////////////////
 function initReplace_inner(strArrReplacementMap, section) { //Returns arrReplace[numLines][numPairsOnLine][2]
   let r = strArrReplacementMap.split(/\r?\n/g).map(e => e.trim()).filter((line) => { return line; });
   for(const j in r) { r[j] = r[j].split(/\s+/g); for(const i in r[j]) r[j][i] = r[j][i].split(','); }
@@ -13,6 +15,12 @@ function initReplace_inner(strArrReplacementMap, section) { //Returns arrReplace
   if (!section.MAIN) section.MAIN = { index: 0, firstLine: -1 };
   addEscaping(r,0); //Arg 0 means only lefthand side of each pair is escaped
   return r;
+}
+function initReplace(result, data) {
+  result.graph.arrReplace = initReplace_inner(data['grapheme-map'], result.graph.section);
+  result.phone.arrReplace = initReplace_inner(data['phoneme-map'], result.phone.section);
+  result.font = data['font-code'].split('\n');
+  arrPage = data['user-text'].split('{br}\n');
 }
 function runReplace_inner(arrPage, iPage=0, arrReplace, section) {
   symbolizeWhitespace(arrPage, iPage)
@@ -40,33 +48,18 @@ function runReplace_inner(arrPage, iPage=0, arrReplace, section) {
   removeEscaping(arrPage, iPage);
   restoreWhitespace(arrPage, iPage);
 }
-function initReplace(url) {
-  fetch(url).then((response) => {
-    response.text().then(function(text) {
-      try { data = JSON.parse(text.split('<desc>')[1].split('</desc>')[0]); } catch { return; }
-      result.graph.arrReplace = initReplace_inner(data['grapheme-map'], result.graph.section);
-      result.phone.arrReplace = initReplace_inner(data['phoneme-map'], result.phone.section);
-    });
-  });
-}
-function runReplace(result, text, iPage=0) {
+function runReplace(result, arrPage, iPage=0) {
   result.page = iPage;
-  if (Array.isArray(text)) {
-    result.text = [text[iPage]];
-    result.graph.text = [text[iPage]];
-    result.phone.text = [text[iPage]];
-  } else {
-    result.text = [text];
-    result.graph.text = [text];
-    result.phone.text = [text];
-  }
+  result.text = [arrPage[iPage]];
+  result.graph.text = [arrPage[iPage]];
+  result.phone.text = [arrPage[iPage]];
   runReplace_inner(result.graph.text, 0, result.graph.arrReplace, result.graph.section);
   runReplace_inner(result.phone.text, 0, result.phone.arrReplace, result.phone.section);
 }
-let data, result = { graph: { text: {}, arrReplace: {}, section: {} }, phone: { text: {}, arrReplace: {}, section: {} } };
-initReplace('https://dwn.github.io/common/lang/ignota.svg');
+let data, arrPage, result = { graph: { section: {} }, phone: { section: {} } };
+initData('https://dwn.github.io/common/lang/ignota.svg')
 setTimeout(() => {
-  let arrPage = data['user-text'].split('{br}\n');
+  initReplace(result, data);
   console.log(arrPage);
   runReplace(result, arrPage, 1);
   console.log(result);
