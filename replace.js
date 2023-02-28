@@ -19,7 +19,7 @@ function initReplace_inner(strArrReplacementMap, section) { //Returns arrReplace
 function initReplace(result, data) {
   result.graph.arrReplace = initReplace_inner(data['grapheme-map'], result.graph.section);
   result.phone.arrReplace = initReplace_inner(data['phoneme-map'], result.phone.section);
-  result.font = data['font-code'].split('\n');
+  result.font.arrCode = data['font-code'].split('\n');
   arrPage = data['user-text'].split('{br}\n');
 }
 function runReplace_inner(arrPage, iPage=0, arrReplace, section) {
@@ -56,12 +56,11 @@ function runReplace(result, arrPage, iPage=0) {
   runReplace_inner(result.graph.text, 0, result.graph.arrReplace, result.graph.section);
   runReplace_inner(result.phone.text, 0, result.phone.arrReplace, result.phone.section);
 }
-let data, arrPage, result = { graph: { section: {} }, phone: { section: {} } };
+let data, arrPage, result = { font: {}, graph: { section: {} }, phone: { section: {} } };
 initData('https://dwn.github.io/common/lang/ignota.svg')
 setTimeout(() => {
   initReplace(result, data);
-  console.log(arrPage);
   runReplace(result, arrPage, 1);
   console.log(result);
   console.log(data);
-}, 4000);
+}, 2000);
