@@ -3,7 +3,38 @@ function addEscaping(arr, onlyIndex=-1) { generalInPlaceArrayFunction(arr, (s) =
 function removeEscaping(arr, onlyIndex=-1) { generalInPlaceArrayFunction(arr, (s) => { return s.replaceAll('\\',''); }, onlyIndex); }
 function symbolizeWhitespace(arr) { return generalInPlaceArrayFunction(arr, (s) => { return '_🛑_' + s.replace(/\n/g,'_⚠_').replaceAll(' ','_') + '_🛑_'; }); }
 function restoreWhitespace(arr) { return generalInPlaceArrayFunction(arr, (s) => { return s.replaceAll('_🛑_','').replaceAll('_🛑','').replaceAll('🛑_','').replaceAll('🛑','').replaceAll('_⚠_','\n').replaceAll('_⚠','\n').replaceAll('⚠_','\n').replaceAll('⚠','\n').replaceAll('_',' '); }); }
-function initData(url) { fetch(url).then((res) => { res.text().then((text) => { try { data = JSON.parse(text.split('<desc>')[1].split('</desc>')[0]); } catch {} }); }); }
+function symbolizeSpecialCharacters(arr) { return generalInPlaceFunction(arr, (s) => { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }); }
+function restoreSpecialCharacters(arr) { return generalInPlaceFunction(arr, (s) => { return s.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&'); }); }
+function loadURLFileV1(url) {
+  fetch(url).then((res) => {
+    res.text().then((text) => {
+      try {
+        data = JSON.parse(text.split('<desc>')[1].split('</desc>')[0]);
+        result.source.bookPageNumber = 1;
+        result.source.book = data['user-text'].split('{br}\n');
+        result.source.graphReplace = data['grapheme-map'];
+        result.source.phoneReplace = data['phoneme-map'];
+        result.source.fontGlyphCode = data['font-code'];
+        result.source.fontKerningCode = data['kerning-map'];
+        result.source.fontOptions.note = data.note;
+        result.source.fontOptions.pen = data.pen;
+        result.source.fontOptions.size = data.size;
+        result.source.fontOptions.space = data.space;
+        result.source.fontOptions.style = data.style;
+        result.source.fontOptions.weight = data.weight;
+      } catch {}
+    });
+  });
+}
+function loadURLFileV2(url) {
+  fetch(url).then((res) => {
+    res.text().then((text) => {
+      try {
+        result.source = JSON.parse(text.split('<desc>')[1].split('</desc>')[0]);
+      } catch {}
+    });
+  });
+}
 /////////////////////////////////////////////////
 function initReplace_inner(strArrReplacementMap, section) { //Returns arrReplace[numLines][numPairsOnLine][2]
   let r = strArrReplacementMap.split(/\r?\n/g).map(e => e.trim()).filter((line) => { return line; });
@@ -16,11 +47,13 @@ function initReplace_inner(strArrReplacementMap, section) { //Returns arrReplace
   addEscaping(r,0); //Arg 0 means only lefthand side of each pair is escaped
   return r;
 }
-function initReplace(result, data) {
-  result.graph.arrReplace = initReplace_inner(data['grapheme-map'], result.graph.section);
-  result.phone.arrReplace = initReplace_inner(data['phoneme-map'], result.phone.section);
-  result.font.arrCode = data['font-code'].split('\n');
-  arrPage = data['user-text'].split('{br}\n');
+function initReplace(result) {
+  result.graph.arrReplace = initReplace_inner(result.source.graphReplace, result.graph.section);
+  result.phone.arrReplace = initReplace_inner(result.source.phoneReplace, result.phone.section);
+}
+function initFont(result) {
+  result.font.arrGlyphCode = result.source.fontGlyphCode.split('\n');
+  result.font.arrKerningCode = result.source.fontKerningCode.split('\n');
 }
 function runReplace_inner(arrPage, iPage=0, arrReplace, section) {
   symbolizeWhitespace(arrPage, iPage)
@@ -48,19 +81,30 @@ function runReplace_inner(arrPage, iPage=0, arrReplace, section) {
   removeEscaping(arrPage, iPage);
   restoreWhitespace(arrPage, iPage);
 }
-function runReplace(result, arrPage, iPage=0) {
-  result.page = iPage;
-  result.text = [arrPage[iPage]];
-  result.graph.text = [arrPage[iPage]];
-  result.phone.text = [arrPage[iPage]];
+function runReplace(result, iPage=0) {
+  result.graph.text = [result.source.book[result.source.bookPageNumber]];
+  result.phone.text = [result.source.book[result.source.bookPageNumber]];
   runReplace_inner(result.graph.text, 0, result.graph.arrReplace, result.graph.section);
   runReplace_inner(result.phone.text, 0, result.phone.arrReplace, result.phone.section);
 }
-let data, arrPage, result = { font: {}, graph: { section: {} }, phone: { section: {} } };
-initData('https://dwn.github.io/common/lang/ignota.svg')
+function flushGraph(result) {
+  document.getElementById('area-1').value = result.source.book[result.source.bookPageNumber];
+  document.getElementById('area-2').value = result.graph.text;
+  document.getElementById('area-3').value = result.source.graphReplace;
+}
+function flushPhone(result) {
+  document.getElementById('area-1').value = result.source.book[result.source.bookPageNumber];
+  document.getElementById('area-2').value = result.phone.text;
+  document.getElementById('area-3').value = result.source.phoneReplace;
+}
+let data, result = { font: {}, graph: { section: {} }, phone: { section: {} }, source: { fontOptions: {} } };
+loadURLFileV1('https://dwn.github.io/common/lang/ignota.svg')
 setTimeout(() => {
-  initReplace(result, data);
-  runReplace(result, arrPage, 1);
+  initReplace(result);
+  initFont(result);
+  runReplace(result);
+  flushGraph(result);
+  // flushPhone(result);
   console.log(result);
   console.log(data);
 }, 2000);
