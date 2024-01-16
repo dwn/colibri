@@ -1,2 +1,2 @@
 #!/bin/bash
-streamlit run app.py --server.runOnSave=true --theme.base=dark --theme.backgroundColor=black
+streamlit run app.py --server.runOnSave=true --client.toolbarMode="viewer" --theme.base=dark --theme.backgroundColor=black

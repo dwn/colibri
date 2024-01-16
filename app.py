@@ -9,7 +9,7 @@ st.set_page_config(page_title='Colibri', page_icon=':black_nib:', layout="wide")
 st.markdown("""
 <style>
   .main > div {
-    padding:.3rem;
+    padding:1.3rem .3rem .3rem .3rem;
   }
   button[data-baseweb="tab"] > div[data-testid="stMarkdownContainer"] > p {
     font-size:1rem;
@@ -18,7 +18,9 @@ st.markdown("""
     margin:0;
     width:100%;
   }
-  
+  .element-container {
+    text-align:center;
+  }
 </style>""", unsafe_allow_html=True)
 #Read .clb file
 book = colibri.ColibriBook()
