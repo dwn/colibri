@@ -5,7 +5,6 @@ import colibri
 from streamlit.components.v1 import html
 #App config
 st.set_page_config(page_title='Colibri', page_icon=':black_nib:', layout="wide")
-#Remove padding around app
 st.markdown("""
 <style>
   .main > div {
