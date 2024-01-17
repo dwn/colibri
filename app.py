@@ -62,12 +62,27 @@ with fontTab:
         object-position:center;
       }}
     </style>
+<p id='-1'>█████████████████████████</p>
+<p id='0'>█████████████████████████</p>
+<p id='1'>█████████████████████████</p>
+<p id='2'>█████████████████████████</p>
+<p id='3'>█████████████████████████</p>
+<p id='4'>█████████████████████████</p>
+<p id='5'>█████████████████████████</p>
+<p id='6'>█████████████████████████</p>
+<p id='7'>█████████████████████████</p>
     <canvas id='scratch-canvas' width='500' height='500'></canvas>
     <canvas id='font-canvas' width='500' height='500'></canvas>
     <img id="scratch-img" alt="scratch">
     <script>
       {jsImageTracer}
       {jsColibri}
+const numColors = 8;
+for (let i = -1; i < numColors; i++) {{
+  const el = document.getElementById(i.toString());
+  el.style.color = ColibriDraw.color(i);
+  el.innerText += ColibriDraw.color(i).toString();
+}}
       var canvas = document.getElementById('font-canvas');
       var ctx = canvas.getContext('2d');
       (async () => {{

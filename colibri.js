@@ -540,6 +540,28 @@ const ColibriConst = {
 ////////////////////////////////////////////
 class ColibriDraw {
 ////////////////////////////////////////////
+  //Defines a color octave with numColors colors, starting with baseColor_THz
+  //Optional return type: 'hex' (default), 'THz' (frequency), 'nm' (wavelength)
+  static color(colorIndex, returnType = 'hex', numColors = 8, baseColor_THz = 900) {
+    const cOver1000 = 299792.458;
+    const baseColor_nm = cOver1000 / baseColor_THz; //nm = 1000 * c / THz
+    const nm = Math.round(baseColor_nm * (2 - (colorIndex / numColors)));
+    if (returnType === 'nm') return nm;
+    if (returnType === 'THz') return cOver1000 / nm; 
+    if (nm < 380 || nm  > 780) return '#000000';
+    const colorCode = [
+      '610061','640066','67006a','6a006f','6d0073','6f0077','72007c','740080','760084','780088','79008d','7b0091','7c0095','7e0099','7f009d','8000a1','8100a5','8100a9','8200ad','8200b1','8300b5','8300b9','8300bc','8300c0','8200c4','8200c8','8100cc','8100cf','8000d3','7f00d7','7e00db','7c00de','7b00e2','7900e6','7800e9','7600ed','7400f1','7100f4','6f00f8','6d00fb',
+      '6a00ff','6600ff','6100ff','5d00ff','5900ff','5400ff','5000ff','4b00ff','4600ff','4200ff','3d00ff','3800ff','3300ff','2e00ff','2800ff','2300ff','1d00ff','1700ff','1100ff','0a00ff','0000ff','000bff','0013ff','001bff','0022ff','0028ff','002fff','0035ff','003bff','0041ff','0046ff','004cff','0051ff','0057ff','005cff','0061ff','0066ff','006cff','0071ff','0076ff',
+      '007bff','007fff','0084ff','0089ff','008eff','0092ff','0097ff','009cff','00a0ff','00a5ff','00a9ff','00aeff','00b2ff','00b7ff','00bbff','00c0ff','00c4ff','00c8ff','00cdff','00d1ff','00d5ff','00daff','00deff','00e2ff','00e6ff','00eaff','00efff','00f3ff','00f7ff','00fbff','00ffff','00fff5','00ffea','00ffe0','00ffd5','00ffcb','00ffc0','00ffb5','00ffa9','00ffa4',
+      '00ffa0','00ff87','00ff7b','00ff6e','00ff61','00ff54','00ff46','00ff38','00ff28','00ff17','00ff00','09ff00','0fff00','15ff00','1aff00','1fff00','24ff00','28ff00','2dff00','31ff00','36ff00','3aff00','3eff00','42ff00','46ff00','4aff00','4eff00','52ff00','56ff00','5aff00','5eff00','61ff00','65ff00','69ff00','6cff00','70ff00','73ff00','77ff00','7bff00','7eff00',
+      '81ff00','85ff00','88ff00','8cff00','8fff00','92ff00','96ff00','99ff00','9cff00','a0ff00','a3ff00','a6ff00','a9ff00','adff00','b0ff00','b3ff00','b6ff00','b9ff00','bdff00','c0ff00','c3ff00','c6ff00','c9ff00','ccff00','cfff00','d2ff00','d5ff00','d8ff00','dbff00','deff00','e1ff00','e4ff00','e7ff00','eaff00','edff00','f0ff00','f3ff00','f6ff00','f9ff00','fcff00',
+      'ffff00','fffc00','fff900','fff600','fff200','ffef00','ffec00','ffe900','ffe600','ffe200','ffdf00','ffdc00','ffd900','ffd500','ffd200','ffcf00','ffcb00','ffc800','ffc500','ffc100','ffbe00','ffbb00','ffb700','ffb400','ffb000','ffad00','ffa900','ffa600','ffa200','ff9f00','ff9b00','ff9800','ff9400','ff9100','ff8d00','ff8900','ff8600','ff8200','ff7e00','ff7b00',
+      'ff7700','ff7300','ff6f00','ff6b00','ff6700','ff6300','ff5f00','ff5b00','ff5700','ff5300','ff4f00','ff4b00','ff4600','ff4200','ff3e00','ff3900','ff3400','ff3000','ff2b00','ff2600','ff2100','ff1b00','ff1600','ff1000','ff0900','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000',
+      'ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000','ff0000',
+      'ff0000','fd0000','fb0000','fa0000','f80000','f60000','f40000','f20000','f10000','ef0000','ed0000','eb0000','e90000','e80000','e60000','e40000','e20000','e00000','de0000','dc0000','db0000','d90000','d70000','d50000','d30000','d10000','cf0000','ce0000','cc0000','ca0000','c80000','c60000','c40000','c20000','c00000','be0000','bc0000','ba0000','b90000','b70000',
+      'b50000','b30000','b10000','af0000','ad0000','ab0000','a90000','a70000','a50000','a30000','a10000','9f0000','9d0000','9b0000','990000','970000','950000','930000','910000','8f0000','8d0000','8a0000','880000','860000','840000','820000','800000','7e0000','7c0000','7a0000','770000','750000','730000','710000','6f0000','6d0000','6a0000','680000','660000','640000','610000'];
+    return '#' + colorCode[nm - 380];
+  }
   static ellipticArc(ctx, x0, y0, x1, y1, numQuarters, orientation) {
     numQuarters=(numQuarters? numQuarters : 4);
     let tmp;
