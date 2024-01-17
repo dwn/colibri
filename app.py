@@ -62,6 +62,7 @@ with fontTab:
         object-position:center;
       }}
     </style>
+<p id='-2'>█████████████████████████</p>
 <p id='-1'>█████████████████████████</p>
 <p id='0'>█████████████████████████</p>
 <p id='1'>█████████████████████████</p>
@@ -78,11 +79,13 @@ with fontTab:
       {jsImageTracer}
       {jsColibri}
 const numColors = 8;
+
 for (let i = -1; i < numColors; i++) {{
   const el = document.getElementById(i.toString());
   el.style.color = ColibriDraw.color(i);
-  el.innerText += ColibriDraw.color(i).toString();
+  el.innerText += ColibriDraw.color(i).toString() + " " + ColibriDraw.color(i, 'nm');
 }}
+
       var canvas = document.getElementById('font-canvas');
       var ctx = canvas.getContext('2d');
       (async () => {{
