@@ -2,7 +2,7 @@
   padding:1.3rem .3rem .3rem .3rem;
 }
 button[data-baseweb="tab"] > div[data-testid="stMarkdownContainer"] > p {
-  font-size:1rem;
+  font-size:1.5rem;
 }
 button[data-baseweb="tab"] {
   margin:0;

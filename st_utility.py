@@ -73,25 +73,25 @@ def spectrum(color_index, return_type='hex', base_color_thz=420, index_offset=0)
 #Set hex colors from palette
 def set_colors(palette):
   global color
-  color = []
-  for item in palette:
-    if isinstance(item, int):
+  color = {}
+  for key, val in palette.items():
+    if isinstance(val, int):
       # Single index, add the hex color directly
-      color.append(spectrum(item))
-    elif isinstance(item, list):
+      color[key] = spectrum(val)
+    elif isinstance(val, list):
       # Blending, calculate the average hex color
-      num_colors = len(item)
+      num_colors = len(val)
       blended_color = '#'
       r_total, g_total, b_total = 0, 0, 0
-      for index in item:
-        hex_color = spectrum(index)
+      for i in val:
+        hex_color = spectrum(i)
         r_total += int(hex_color[1:3], 16)
         g_total += int(hex_color[3:5], 16)
         b_total += int(hex_color[5:7], 16)
       blended_color += format(r_total // num_colors, '02x')
       blended_color += format(g_total // num_colors, '02x')
       blended_color += format(b_total // num_colors, '02x')
-      color.append(blended_color)
+      color[key] = blended_color
 #Display spectrum
 def show_spectrum():
   markdown('###### spectrum')
@@ -100,5 +100,7 @@ def show_spectrum():
 #Display hex colors from palette
 def show_colors():
   markdown('###### color')
-  for i in range(len(color)):
-    markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 9px black">{index} | {hex}</div>'.format(index=i, hex=color[i]), unsafe_allow_html=True)
+  i = 0
+  for key, val in color.items():
+    markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 9px black">{name} | {index} | {hex}</div>'.format(name=key, index=i, hex=val), unsafe_allow_html=True)
+    i += 1

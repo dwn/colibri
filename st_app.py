@@ -5,35 +5,36 @@ import numpy as np
 import colibri
 import st_utility as ut
 #App config
-st.set_page_config(page_title='Colibri', page_icon=':black_nib:', layout="wide")
+st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
 #Read imagetracer.js
 jsColibri, jsImageTracer, css = ut.read(['colibri.js', 'imagetracer.js', 'style.css'])
 #Style CSS
 st.markdown('<style>{}</style>'.format(css), unsafe_allow_html=True)
-ut.num_spectrum_colors = 7
-ut.show_spectrum()
-ut.set_colors([[2,3,8,8,8],[2,-1]])
-ut.show_colors()
+#ut.num_spectrum_colors = 30
+ut.set_colors({
+  'gold': [2,3,8,8,8],
+  'brown': [2,-1]
+})
+#ut.show_colors(); ut.show_spectrum()
 #Read .clb file
 book = colibri.ColibriBook()
 book.init('static/clb/', 'teonaht')
 book.run()
 #Navigation tabs
 with st.container():
-  arrTab = ['font', 'phone', 'graph', 'adjust', 'profile']
+  arrTab = [
+    ':lower_left_fountain_pen:',
+    ':ear:',
+    ':eye:',
+    ':scroll:',
+    ':bust_in_silhouette:']
   fontTab, graphTab, phoneTab, adjustTab, accountTab = st.tabs(arrTab)
 ##########################################
 # Main UI
 ##########################################
 #function font_text_area_callback():
 with fontTab:
-  font_text_area = st.text_input(
-    "glyph code",
-    label_visibility='collapsed',
-    #height=400,
-    #on_change=font_text_area_callback,
-    value='\n'.join(book.font['arrGlyphCode']))
-  #HTML component
+  #Glyph drawing component
   html("""
     <style>
       body {{ margin:0; background-color:#444; }}
@@ -64,3 +65,29 @@ with fontTab:
   """.format(jsImageTracer=jsImageTracer, jsColibri=jsColibri),
   width=500,
   height=500)
+  #font_text_input = st.text_input(
+  #  "glyph code",
+  #  label_visibility='collapsed',
+  #  #height=400,
+  #  #on_change=font_text_area_callback,
+  #  value=book.font['arrGlyphCode'][0])
+  #def get_glyph_callback():
+  #  font_text_input.value = 'hi'
+  placeholder = st.empty()
+  input = placeholder.text_input('glyph code', value='click a character')
+  with st.container():
+    ignore_chars = [0x20, 0x2b, 0x2d, 0x5c, 0x5f, 0x7c, 0x7f, 0xa0, 0xad]
+    click = {}
+    for i_begin in range(32, 255, 8):
+      if not i_begin in [0x80, 0x88, 0x90, 0x98]: #Reserved lines of ASCII space
+        i = i_begin
+        for col in st.columns([1,1,1,1,1,1,1,1]):
+          if i not in ignore_chars:
+            c = '\\'+chr(i)
+            if len(c) > 1 and c != '\\#' and c != '\\*': #Maintains escaping on special markdown characters
+              c = c[1]
+            click[i] = col.button(c, key=i)
+          i += 1
+    for i in click:
+      if click[i]:
+        input = placeholder.text_input('glyph code', value=book.font['arrGlyphCode'][i])
