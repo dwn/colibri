@@ -1,26 +1,19 @@
 import streamlit as st
+from streamlit.components.v1 import html
 import pandas as pd
 import numpy as np
 import colibri
-from streamlit.components.v1 import html
+import st_utility as ut
 #App config
 st.set_page_config(page_title='Colibri', page_icon=':black_nib:', layout="wide")
-st.markdown("""
-<style>
-  .main > div {
-    padding:1.3rem .3rem .3rem .3rem;
-  }
-  button[data-baseweb="tab"] > div[data-testid="stMarkdownContainer"] > p {
-    font-size:1rem;
-  }
-  button[data-baseweb="tab"] {
-    margin:0;
-    width:100%;
-  }
-  .element-container {
-    text-align:center;
-  }
-</style>""", unsafe_allow_html=True)
+#Read imagetracer.js
+jsColibri, jsImageTracer, css = ut.read(['colibri.js', 'imagetracer.js', 'style.css'])
+#Style CSS
+st.markdown('<style>{}</style>'.format(css), unsafe_allow_html=True)
+ut.num_spectrum_colors = 7
+ut.show_spectrum()
+ut.set_colors([[2,3,8,8,8],[2,-1]])
+ut.show_colors()
 #Read .clb file
 book = colibri.ColibriBook()
 book.init('static/clb/', 'teonaht')
@@ -40,14 +33,6 @@ with fontTab:
     #height=400,
     #on_change=font_text_area_callback,
     value='\n'.join(book.font['arrGlyphCode']))
-  #Read imagetracer.js
-  f = open('imagetracer.js', 'r')
-  jsImageTracer = f.read()
-  f.close()
-  #Read imagetracer.js
-  f = open('colibri.js', 'r')
-  jsColibri = f.read()
-  f.close()
   #HTML component
   html("""
     <style>

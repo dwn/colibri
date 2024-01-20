@@ -1,2 +1,2 @@
 #!/bin/bash
-streamlit run app.py --server.runOnSave=true --server.headless=true --theme.base=dark --theme.backgroundColor=black
+streamlit run st_app.py --server.runOnSave=true --server.headless=true --theme.base=dark --theme.backgroundColor=black

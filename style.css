@@ -1,0 +1,13 @@
+.main > div {
+  padding:1.3rem .3rem .3rem .3rem;
+}
+button[data-baseweb="tab"] > div[data-testid="stMarkdownContainer"] > p {
+  font-size:1rem;
+}
+button[data-baseweb="tab"] {
+  margin:0;
+  width:100%;
+}
+.element-container {
+  text-align:center;
+}
