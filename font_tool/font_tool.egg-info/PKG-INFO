@@ -35,13 +35,13 @@ st.write(value)
 # Changes (example name)
     ├── LICENSE
     ├── MANIFEST.in
-    ├── setup.py                <- name="streamlit-custom-slider"
+    ├── setup.py                <- name="X"
     └── streamlit_custom_slider <- folder name
         ├── __init__.py         <- make changes
         └── frontend            <- run `npm install` here
-            ├── package.json    <- "name": "streamlit_custom_slider"
+            ├── package.json    <- "name": "X"
             ├── public/
-            ├── src/
+            ├── src/            <- filename X.tsx
             ├── .env
             ├── .prettierc
             ├── package-lock.json

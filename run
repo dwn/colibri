@@ -1,3 +1,2 @@
 #!/bin/bash
 streamlit run st_app.py --server.runOnSave=true --server.headless=true --theme.base=dark --theme.backgroundColor=black
-#(cd font_tool && pip install -e . && streamlit run font_tool/example.py --server.runOnSave=true --server.headless=true --theme.base=dark --theme.backgroundColor=black)
