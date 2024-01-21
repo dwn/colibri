@@ -35,7 +35,7 @@ with st.container():
 ##########################################
 with fontTab:
   value = font_tool('ag')
-  st.markdown('You clicked!')
+  st.markdown('You clicked! '+str(value))
   #Glyph drawing component
   html("""
     <style>
