@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import colibri
 import st_utility as ut
+from font_tool import font_tool
 #App config
 st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
 #Read imagetracer.js
@@ -30,10 +31,11 @@ with st.container():
     ':bust_in_silhouette:']
   fontTab, graphTab, phoneTab, adjustTab, accountTab = st.tabs(arrTab)
 ##########################################
-# Main UI
+# Font tab
 ##########################################
-#function font_text_area_callback():
 with fontTab:
+  value = font_tool('ag')
+  st.markdown('You clicked!')
   #Glyph drawing component
   html("""
     <style>

@@ -1,0 +1,11 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+glyph_tool/__init__.py
+glyph_tool/example.py
+glyph_tool.egg-info/PKG-INFO
+glyph_tool.egg-info/SOURCES.txt
+glyph_tool.egg-info/dependency_links.txt
+glyph_tool.egg-info/requires.txt
+glyph_tool.egg-info/top_level.txt
