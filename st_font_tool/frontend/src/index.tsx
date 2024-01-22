@@ -1,10 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import MyComponent from "./MyComponent"
+import FontTool from "./FontTool"
 
 ReactDOM.render(
   <React.StrictMode>
-    <MyComponent />
+    <FontTool />
   </React.StrictMode>,
   document.getElementById("root")
 )

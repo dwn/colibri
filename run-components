@@ -1,2 +1,0 @@
-#!/bin/bash
-(cd font_tool && pip install . && cd font_tool/frontend && npm install && npm run start)

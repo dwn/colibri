@@ -1,82 +1,80 @@
-////////////////////////////////////////////
-const ColibriConst = {
-////////////////////////////////////////////
+const FontToolUtilConstant = {
   svgStrGrid: `
-  <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <pattern id="smallGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-        <path d="M 50 0 L 0 0 0 50" fill="none" stroke="goldenrod" stroke-width="1"/>
-      </pattern>
-      <pattern id="grid" x="25" y="-25" width="100" height="100" patternUnits="userSpaceOnUse">
-        <rect width="100" height="100" fill="url(#smallGrid)"/>
-        <path d="M 100 0 L 0 0 0 100" fill="none" stroke="goldenrod" stroke-width="4"/>
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#grid)"/>
-    <g transform="scale(+1,-1)" fill="none" stroke="darkgoldenrod" stroke-width=".75">
-      <text x="30" y="-460">a</text>
-      <text x="130" y="-460">b</text>
-      <text x="230" y="-460">c</text>
-      <text x="330" y="-460">d</text>
-      <text x="430" y="-460">e</text>
-      <text x="30" y="-360">f</text>
-      <text x="130" y="-360">g</text>
-      <text x="230" y="-360">h</text>
-      <text x="330" y="-360">i</text>
-      <text x="430" y="-360">j</text>
-      <text x="30" y="-260">k</text>
-      <text x="130" y="-260">l</text>
-      <text x="230" y="-260">m</text>
-      <text x="330" y="-260">n</text>
-      <text x="430" y="-260">o</text>
-      <text x="30" y="-160">p</text>
-      <text x="130" y="-160">q</text>
-      <text x="230" y="-160">r</text>
-      <text x="330" y="-160">s</text>
-      <text x="430" y="-160">t</text>
-      <text x="30" y="-60">u</text>
-      <text x="130" y="-60">v</text>
-      <text x="230" y="-60">w</text>
-      <text x="330" y="-60">x</text>
-      <text x="430" y="-60">y</text>
-      <text x="30" y="-3">z</text>
-      <text x="130" y="-3">]</text>
-      <text x="230" y="-3">^</text>
-      <text x="330" y="-3">_</text>
-      <text x="430" y="-3">\`</text>
-    </g>
-  </svg>`,
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" >
+      <defs>
+        <pattern id="smallGrid" width="50" height="50" patternUnits="userSpaceOnUse">
+          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="goldenrod" stroke-width="1"/>
+        </pattern>
+        <pattern id="grid" x="25" y="-25" width="100" height="100" patternUnits="userSpaceOnUse">
+          <rect width="100" height="100" fill="url(#smallGrid)"/>
+          <path d="M 100 0 L 0 0 0 100" fill="none" stroke="goldenrod" stroke-width="4"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+      <g transform="scale(+1,-1)" fill="none" stroke="darkgoldenrod" stroke-width=".75">
+        <text x="30" y="-460">a</text>
+        <text x="130" y="-460">b</text>
+        <text x="230" y="-460">c</text>
+        <text x="330" y="-460">d</text>
+        <text x="430" y="-460">e</text>
+        <text x="30" y="-360">f</text>
+        <text x="130" y="-360">g</text>
+        <text x="230" y="-360">h</text>
+        <text x="330" y="-360">i</text>
+        <text x="430" y="-360">j</text>
+        <text x="30" y="-260">k</text>
+        <text x="130" y="-260">l</text>
+        <text x="230" y="-260">m</text>
+        <text x="330" y="-260">n</text>
+        <text x="430" y="-260">o</text>
+        <text x="30" y="-160">p</text>
+        <text x="130" y="-160">q</text>
+        <text x="230" y="-160">r</text>
+        <text x="330" y="-160">s</text>
+        <text x="430" y="-160">t</text>
+        <text x="30" y="-60">u</text>
+        <text x="130" y="-60">v</text>
+        <text x="230" y="-60">w</text>
+        <text x="330" y="-60">x</text>
+        <text x="430" y="-60">y</text>
+        <text x="30" y="-3">z</text>
+        <text x="130" y="-3">]</text>
+        <text x="230" y="-3">^</text>
+        <text x="330" y="-3">_</text>
+        <text x="430" y="-3">\`</text>
+      </g>
+    </svg>`,
   svgFontCapo: `
-  <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-  <desc>[[DESC]]</desc>
-  <defs>
-  <font id="[[NAME]]" horiz-adv-x="0">
-  <font-face 
-    font-family="[[NAME]]"
-    font-weight="400"
-    font-style="normal"
-    font-stretch="normal"
-    units-per-em="3072"
-    panose-1="1 1 1 1 1 1 1 1 1 1"
-    ascent="3072"
-    descent="456"
-    x-height="924"
-    cap-height="3072"
-    underline-thickness="96"
-    underline-position="-384"
-    slope="41"
-    unicode-range="U+0020-FFFD"
-  />
-  <missing-glyph horiz-adv-x="0"
-  d="M529 701q51 0 89 -15t56.5 -39.5t27 -48.5t8.5 -48q0 -52 -22 -93.5t-55 -69.5t-67 -53t-64 -57.5t-41 -70.5l-10 -47h-90l12 55q9 41 37.5 76t62 60.5t66 52t54 60.5t21.5 75q0 38 -30 62t-77 24q-66 0 -103.5 -37.5t-54.5 -119.5h-85q47 234 265 234zM431 63l-22 -103h-90l22 103h90zM-15 -139l200 939h730l-200 -939h-730zM83 -69h564l170 799h-564z" />
-  `,
+    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+    <desc>[[DESC]]</desc>
+    <defs>
+    <font id="[[NAME]]" horiz-adv-x="0">
+    <font-face 
+      font-family="[[NAME]]"
+      font-weight="400"
+      font-style="normal"
+      font-stretch="normal"
+      units-per-em="3072"
+      panose-1="1 1 1 1 1 1 1 1 1 1"
+      ascent="3072"
+      descent="456"
+      x-height="924"
+      cap-height="3072"
+      underline-thickness="96"
+      underline-position="-384"
+      slope="41"
+      unicode-range="U+0020-FFFD"
+    />
+    <missing-glyph horiz-adv-x="0"
+    d="M529 701q51 0 89 -15t56.5 -39.5t27 -48.5t8.5 -48q0 -52 -22 -93.5t-55 -69.5t-67 -53t-64 -57.5t-41 -70.5l-10 -47h-90l12 55q9 41 37.5 76t62 60.5t66 52t54 60.5t21.5 75q0 38 -30 62t-77 24q-66 0 -103.5 -37.5t-54.5 -119.5h-85q47 234 265 234zM431 63l-22 -103h-90l22 103h90zM-15 -139l200 939h730l-200 -939h-730zM83 -69h564l170 799h-564z" />
+    `,
   svgFontCoda: `
-  <glyph glyph-name="space" unicode="&#x20;" horiz-adv-x="[[XSPACE]]" vert-adv-y="[[YSPACE]]" d=""/>
-  <glyph glyph-name="plus" unicode="&#x2b;" horiz-adv-x="1872" vert-adv-y="2808" d=""/>
-  <glyph glyph-name="hyphenminus" unicode="&#x2d;" horiz-adv-x="187.2" vert-adv-y="280.2" d=""/>
-  <glyph glyph-name="vbar" unicode="&#x7c;" horiz-adv-x="936" vert-adv-y="1404" d=""/>
-  <glyph glyph-name="nbsp" unicode="&#xa0;" horiz-adv-x="[[XSPACE]]" vert-adv-y="[[YSPACE]]" d=""/>
-  </font></defs></svg>`,
+    <glyph glyph-name="space" unicode="&#x20;" horiz-adv-x="[[XSPACE]]" vert-adv-y="[[YSPACE]]" d=""/>
+    <glyph glyph-name="plus" unicode="&#x2b;" horiz-adv-x="1872" vert-adv-y="2808" d=""/>
+    <glyph glyph-name="hyphenminus" unicode="&#x2d;" horiz-adv-x="187.2" vert-adv-y="280.2" d=""/>
+    <glyph glyph-name="vbar" unicode="&#x7c;" horiz-adv-x="936" vert-adv-y="1404" d=""/>
+    <glyph glyph-name="nbsp" unicode="&#xa0;" horiz-adv-x="[[XSPACE]]" vert-adv-y="[[YSPACE]]" d=""/>
+    </font></defs></svg>`,
   defaultGlyphData: {
     "&#x21;": {'glyph-name': "exclam", 'horiz-adv-x': "686", 'vert-adv-y': "1872", 'd': "M430 1433V861Q430 816 429 773T424 687T417 598T406 500H285Q279 552 275 597T267 686T263 773T261 861V1433H430ZM218 110Q218 136 227 159T253 199T293 226T342 236Q368 236 391 226T431 199T457 159T467 110Q467 83 458 61T431 21T391 -5T342 -15Q316 -15 293 -6T254 21T228 60T218 110Z"},
     "&#x22;": {'glyph-name': "quotedbl", 'horiz-adv-x': "794", 'vert-adv-y': "1872", 'd': "M307 1433V1143L291 988Q288 956 274 939T229 921Q203 921 189 938T168 988L152 1143V1433H307ZM640 1433V1143L624 988Q621 956 607 939T562 921Q536 921 522 938T501 988L485 1143V1433H640Z"},
@@ -410,8 +408,11 @@ const ColibriConst = {
   }
 };
 ////////////////////////////////////////////
-class ColibriDraw {
+export default class FontToolUtil {
 ////////////////////////////////////////////
+  static get constant() {
+    return FontToolUtilConstant;
+  }
   static ellipticArc(ctx, x0, y0, x1, y1, numQuarters, orientation) {
     numQuarters=(numQuarters? numQuarters : 4);
     let tmp;
@@ -422,13 +423,13 @@ class ColibriDraw {
       else { x1+=x1-x0; y0-=y1-y0; }
       tmp=(((orientation<<1)+(y0>y1))<<1)+(x0>x1);
       q[tmp<4? tmp : 7-tmp]=true;
-      if (numQuarters==3) {
+      if (numQuarters===3) {
         for(let i=0;i<4;i++) {
           q[i]=!q[i];
         }
       }
     }
-    else if (numQuarters==2) {
+    else if (numQuarters===2) {
       if (orientation) x0-=x1-x0;
       else y0-=y1-y0;
       tmp=(((orientation<<1)+(y0>y1))<<1)+(x0>x1);
@@ -470,7 +471,7 @@ class ColibriDraw {
       ctx.lineWidth = 2;
       ctx.lineCap = 'butt';
     }
-    if (x0==x1&&y0==y1) {
+    if (x0===x1&&y0===y1) {
       for(let i=-3;i<4;i++) { //Point
         ctx.moveTo((x0>>16)-10-i, 499-((y0>>16)-10+i));
         ctx.lineTo((x0>>16)+10-i, 499-((y0>>16)+10+i));
@@ -484,10 +485,10 @@ class ColibriDraw {
     else {
       let dq;
       if (curveForm<=9) {
-        let cx=(x0+x1)>>1;
-        let cy=(y0+y1)>>1;
-        let dx=(x1-x0)>>1;
-        let dy=(y1-y0)>>1;
+        const cx=(x0+x1)>>1;
+        const cy=(y0+y1)>>1;
+        const dx=(x1-x0)>>1;
+        const dy=(y1-y0)>>1;
         let s,t,u,v,p=[];
         dq=(Math.abs(dx)+Math.abs(dy))>>1;
         let dq2=(dy>0? dq : -dq);
@@ -503,7 +504,7 @@ class ColibriDraw {
         else if (curveForm<=2) { //Elliptic arc
           let numQuarters=1;
           let orientation=curveForm&1;
-          if (x0==x1) {
+          if (x0===x1) {
             if (y0>y1) { let tmp=y0; y0=y1; y1=tmp; } //For GM1 compatibility
             numQuarters=2;
             dq=(y1-y0)>>1;
@@ -511,14 +512,14 @@ class ColibriDraw {
             orientation=true;
             x1+=dq;
           }
-          else if (y0==y1) {
+          else if (y0===y1) {
             if (x0>x1&&!flipBowlShape) { //For GM1 compatibility
               let tmp=x0; x0=x1; x1=tmp;
             }
             if (!flipBowlShape) { //For GM1 compatibility
               let tmp=x0; x0=x1; x1=tmp;
             }
-            if (curveForm==2) {
+            if (curveForm===2) {
               let tmp=x0; x0=x1; x1=tmp;
             }
             numQuarters=2;
@@ -531,7 +532,7 @@ class ColibriDraw {
           return;
         }
         else {
-          if (y0==y1) dq2=-dq2; //For GM1 compatibility
+          if (y0===y1) dq2=-dq2; //For GM1 compatibility
           if (curveForm<=3) { //Bezier curve
             s=dx; u=dq; v=dq2;
           }
@@ -583,17 +584,16 @@ class ColibriDraw {
     }
     ctx.beginPath();
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    let k0,x0,y0,c,k1,x1,y1;
     for(let i=1;i<str.length;i++) {
       let c0,c1,c2,c3,xoOffset=0,yoOffset=0,xfOffset=0,yfOffset=0;
       c1 = str.charCodeAt(i) - 48; //Digit or slash
       if (c1 >= -1 && c1 <= 9) {
         c0 = str.charCodeAt(i-1) - 97;
-        if (c0 == -52 || c0 == -54 || c0 == 27) { //- + |
-          if (c0 == -54 || c0 == -52) {
+        if (c0 === -52 || c0 === -54 || c0 === 27) { //- + |
+          if (c0 === -54 || c0 === -52) {
             xoOffset=50;
           }
-          if (c0 == -54 || c0 == 27) {
+          if (c0 === -54 || c0 === 27) {
             yoOffset=50;
           }
           if (i-2>=0) {
@@ -604,11 +604,11 @@ class ColibriDraw {
           c2 = str.charCodeAt(i+1) - 97;
           if (i+2<str.length) {
             c3 = str.charCodeAt(i+2) - 97;
-            if (c3 == -52 || c3 == -54 || c3 == 27) { //- + |
-              if (c3 == -54 || c3 == -52) {
+            if (c3 === -52 || c3 === -54 || c3 === 27) { //- + |
+              if (c3 === -54 || c3 === -52) {
                 xfOffset=50;
               }
-              if (c3 == -54 || c3 == 27) {
+              if (c3 === -54 || c3 === 27) {
                 yfOffset=50;
               }
             }
@@ -616,11 +616,11 @@ class ColibriDraw {
           if (c0 >= -4 && c0 <= 25 && c2 >= -4 && c2 <= 25) {
             if (c0 < 0) c0 += 30;
             if (c2 < 0) c2 += 30;
-            let xo = 25 + 100 * (c0 % 5);
-            let yo = 25 + 100 * Math.floor(c0 / 5);
-            let xf = 25 + 100 * (c2 % 5);
-            let yf = 25 + 100 * Math.floor(c2 / 5);
-            let r = (pen === 'round'? 5 :
+            const xo = 25 + 100 * (c0 % 5);
+            const yo = 25 + 100 * Math.floor(c0 / 5);
+            const xf = 25 + 100 * (c2 % 5);
+            const yf = 25 + 100 * Math.floor(c2 / 5);
+            const r = (pen === 'round'? 5 :
                       pen === 'medium'? 11 : 16);
             for(let j=-r;j<=r;j++) {
               this.curve(ctx, (xo+j+xoOffset)<<16, (yo-j+yoOffset)<<16, (xf+j+xfOffset)<<16, (yf-j+yfOffset)<<16, c1, false, pen);
@@ -631,7 +631,8 @@ class ColibriDraw {
     }
     ctx.stroke();
     const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-    return ImageTracer.imagedataToSVG(imageData, 'posterized2');
+    //return ImageTracer.imagedataToSVG(imageData, 'posterized2');
+    return 'testing';
   }
   static async drawImageAndGetSVG_isValid(ctx, glyphCode, pen='medium', scratchCanvasId='scratch-canvas', scratchImageId='scratch-img') {
     //Determines whether the resulting SVG truly matches the original image as rendered by the current browser
@@ -639,7 +640,7 @@ class ColibriDraw {
     return new Promise((resolve, reject) => {
       const w = ctx.canvas.width;
       const h = ctx.canvas.height;
-      const svgStr = ColibriDraw.drawImageAndGetSVG(ctx, glyphCode, pen);
+      const svgStr = FontToolUtil.drawImageAndGetSVG(ctx, glyphCode, pen);
       const imageData = ctx.getImageData(0, 0, w, h);
       //Render SVG as image and validate that it reproduces original image
       const scratchImg = document.getElementById(scratchImageId);
@@ -675,7 +676,7 @@ class ColibriDraw {
     }
     arrStr=arrStr.replace(/M 0 0 L 175 0 L 175 175 L 0 175 L 0 0 Z/g,'').replace(/ Z /g,'');
     arrStr=arrStr.trim();
-    arrStr=arrStr.split('M ').filter(function(el) { return el.length != 0 });
+    arrStr=arrStr.split('M ').filter(function(el) { return el.length !== 0 });
     let svgGlyph = '';
     for(let i=0; i<arrStr.length; i++) {
       if (i<=numHoles || i>=arrStr.length-numLastPaths) svgGlyph += ' M '+arrStr[i];
@@ -685,14 +686,14 @@ class ColibriDraw {
   }
   static getSVGFont(ctx, fontGlyphCode) {
     const arrFontGlyphCode = fontGlyphCode.split('\n');
-    let svgFont = ColibriConst.svgFontCapo;
+    let svgFont = FontToolUtilConstant.svgFontCapo;
     for(let i=0; i<arrFontGlyphCode.length; i++) {
       const svgStr = this.drawImageAndGetSVG(ctx, arrFontGlyphCode[i]);
       const glyphUnicode = '&#x' + (33 + i).toString(16) + ';';
-      const glyphName = ColibriConst.defaultGlyphData?.[glyphUnicode]?.['glyph-name'];
+      const glyphName = FontToolUtilConstant.defaultGlyphData?.[glyphUnicode]?.['glyph-name'];
       svgFont += this.getSVGGlyph(glyphName, glyphUnicode, 50, svgStr);
     }
-    svgFont += ColibriConst.svgFontCoda;
+    svgFont += FontToolUtilConstant.svgFontCoda;
     return svgFont;
   }
 };

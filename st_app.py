@@ -4,13 +4,10 @@ import pandas as pd
 import numpy as np
 import colibri
 import st_utility as ut
-from font_tool import font_tool
+from st_font_tool import font_tool
 #App config
 st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
-#Read imagetracer.js
-jsColibri, jsImageTracer, css = ut.read(['colibri.js', 'imagetracer.js', 'style.css'])
-#Style CSS
-st.markdown('<style>{}</style>'.format(css), unsafe_allow_html=True)
+st.markdown('<style>{}</style>'.format(ut.read('style.css')), unsafe_allow_html=True)
 #ut.num_spectrum_colors = 30
 ut.set_colors({
   'gold': [2,3,8,8,8],
@@ -34,49 +31,9 @@ with st.container():
 # Font tab
 ##########################################
 with fontTab:
-  value = font_tool('ag')
-  st.markdown('You clicked! '+str(value))
-  #Glyph drawing component
-  html("""
-    <style>
-      body {{ margin:0; background-color:#444; }}
-      #scratch-img, #scratch-canvas {{ display:none }}
-      #font-canvas {{
-        background-color:lemonchiffon;
-        transform:scaleY(-1);
-        width:100%;
-        height:100%;
-        object-fit:contain;
-        object-position:center;
-      }}
-    </style>
-    <canvas id='scratch-canvas' width='500' height='500'></canvas>
-    <canvas id='font-canvas' width='500' height='500'></canvas>
-    <img id="scratch-img" alt="scratch">
-    <script>
-      {jsImageTracer}
-      {jsColibri}
-      var canvas = document.getElementById('font-canvas');
-      var ctx = canvas.getContext('2d');
-      (async () => {{
-        const svgStrGrid = "data:image/svg+xml;base64," + btoa(ColibriConst.svgStrGrid);
-        document.getElementById('font-canvas').style.backgroundImage = "url(" + svgStrGrid + ")";
-        const res = await ColibriDraw.drawImageAndGetSVG_isValid(ctx, "a/h");
-      }})();
-    </script>
-  """.format(jsImageTracer=jsImageTracer, jsColibri=jsColibri),
-  width=500,
-  height=500)
-  #font_text_input = st.text_input(
-  #  "glyph code",
-  #  label_visibility='collapsed',
-  #  #height=400,
-  #  #on_change=font_text_area_callback,
-  #  value=book.font['arrGlyphCode'][0])
-  #def get_glyph_callback():
-  #  font_text_input.value = 'hi'
+  fontGlyphCodeIn = 'a/j'
   placeholder = st.empty()
-  input = placeholder.text_input('glyph code', value='click a character')
+  fontGlyphCodeIn = placeholder.text_input('glyph code', value='click a character')
   with st.container():
     ignore_chars = [0x20, 0x2b, 0x2d, 0x5c, 0x5f, 0x7c, 0x7f, 0xa0, 0xad]
     click = {}
@@ -92,4 +49,6 @@ with fontTab:
           i += 1
     for i in click:
       if click[i]:
-        input = placeholder.text_input('glyph code', value=book.font['arrGlyphCode'][i])
+        fontGlyphCodeIn = placeholder.text_input('glyph code', value=book.font['arrGlyphCode'][i])
+  fontGlyphCodeOut = font_tool(fontGlyphCode=fontGlyphCodeIn)
+  st.markdown('You clicked! '+str(fontGlyphCodeOut))

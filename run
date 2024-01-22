@@ -1,2 +1,25 @@
 #!/bin/bash
-streamlit run st_app.py --server.runOnSave=true --server.headless=true --theme.base=dark --theme.backgroundColor=black
+if [ -z "$1" ]; then
+  printf "\nArgument should be 'app' or 'components'\n\n"
+  exit 1
+fi
+if [ "$1" == "app" ]; then
+  streamlit run st_app.py --server.runOnSave=true --server.headless=true --theme.base=dark --theme.backgroundColor=black
+elif [ "$1" == "components" ]; then
+  #How to develop a new component
+  #├── LICENSE
+  #├── MANIFEST.in             <- change
+  #├── setup.py                <- name="X"
+  #└── streamlit_custom_slider <- folder name
+  #    ├── __init__.py         <- make changes
+  #    └── frontend            <- run `npm install` here
+  #        ├── package.json    <- "name": "X"
+  #        ├── public/
+  #        ├── src/            <- main files
+  #        ├── .env
+  #        ├── .prettierc
+  #        ├── package-lock.json
+  #        ├── node_modules
+  #        └── tsconfig.json
+  (cd st_font_tool/frontend && npm install && npm run start)
+fi

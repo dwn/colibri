@@ -1,7 +1,10 @@
 from streamlit import markdown
-#Reads multiple files from an array of filenames
+#Reads multiple files from an array of filenames (or just one file from a string)
 def read(file_paths):
   contents = []
+  if isinstance(file_paths, str):
+    file_paths = [file_paths]
+    not_array = True
   for file_path in file_paths:
     try:
       with open(file_path, 'r') as file:
@@ -9,7 +12,7 @@ def read(file_paths):
         contents.append(content)
     except FileNotFoundError:
       contents.append(None)
-  return contents
+  return contents[0] if not_array else contents
 #Values referenced by spectrum()
 num_spectrum_colors = 7
 spectrum_code = [
