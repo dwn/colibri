@@ -31,6 +31,7 @@ with st.container():
 # Font tab
 ##########################################
 with fontTab:
+  st.header('Hello World!')
   fontGlyphCodeIn = 'a/j'
   placeholder = st.empty()
   fontGlyphCodeIn = placeholder.text_input('glyph code', value='click a character')
