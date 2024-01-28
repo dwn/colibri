@@ -1,0 +1,43 @@
+#!/bin/bash
+if [ -z "$1" ]; then
+  echo "
+Argument should be 'app' or 'component'
+
+*** DEV MODE INSTRUCTIONS (hot-loads editable component) ***
+
+From this directory, start component server:
+ST_DEV_MODE='1' ./local component
+From this directory in another terminal tab, start app:
+ST_DEV_MODE='1' ./local app
+
+*** PROD MODE INSTRUCTIONS (builds and installs component) ***
+
+./local all
+"
+  exit 1
+fi
+if [ "$1" == "component" ] || [ "$1" == "all" ]; then
+  #How to develop a new component for streamlit from https://github.com/streamlit/component-template
+  #├── build/               <- where py build is generated 
+  #├── MANIFEST.in          <- change
+  #├── setup.py             <- name="X"
+  #└── st_tool              <- folder name
+  #    ├── __init__.py      <- change
+  #    └── frontend         <- runs `npm install` and `npm run build` here (delete old node_modules if necessary)
+  #        ├── build/       <- where npm build is generated
+  #        ├── package.json <- "name": "X"
+  #        ├── src/         <- main files
+  #        ├── public/
+  #        ├── .env
+  #        ├── .prettierc
+  #        ├── package-lock.json
+  #        └── tsconfig.json
+  (cd st_font_tool/st_font_tool/frontend && npm install && npm run build && if [ "$ST_DEV_MODE" == "1" ]; then npm run start; fi)
+fi
+if [ "$1" == "app" ] || [ "$1" == "all" ]; then
+  OPTS=""
+  if [ "$ST_DEV_MODE" == "1" ]; then
+    OPTS="-e"
+  fi
+  pip install ${OPTS} ./st_font_tool && streamlit run st_app.py
+fi

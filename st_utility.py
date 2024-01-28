@@ -1,4 +1,15 @@
 from streamlit import markdown
+#Converts a character code to a properly escaped and printable character
+def char(i):
+  c = '\\' + chr(i)
+  if len(c) > 1 and c != '\\#' and c != '\\*': #Maintains escaping on special markdown characters
+    c = c[1]
+  return c
+#Converts back to ascii value taking only the last character, not any escaping
+def asc(c):
+  if len(c) > 1:
+    c = c[-1]
+  return ord(c)
 #Reads multiple files from an array of filenames (or just one file from a string)
 def read(file_paths):
   contents = []
@@ -99,11 +110,11 @@ def set_colors(palette):
 def show_spectrum():
   markdown('###### spectrum')
   for i in range(-1, num_spectrum_colors + 2):
-    markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 9px black">{index} | {hex} | {nm} nm | {THz} THz</div>'.format(index=i, hex=spectrum(i), nm=spectrum(i, 'nm'), THz=spectrum(i, 'THz')), unsafe_allow_html=True)
+    markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 1px white,0 0 1px white,0 0 2px gray,0 0 2px gray">{index} | {hex} | {nm} nm | {THz} THz</div>'.format(index=i, hex=spectrum(i), nm=spectrum(i, 'nm'), THz=spectrum(i, 'THz')), unsafe_allow_html=True)
 #Display hex colors from palette
 def show_colors():
   markdown('###### color')
   i = 0
   for key, val in color.items():
-    markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 9px black">{name} | {index} | {hex}</div>'.format(name=key, index=i, hex=val), unsafe_allow_html=True)
+    markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 1px white,0 0 1px white,0 0 2px gray,0 0 2px gray">{name} | {index} | {hex}</div>'.format(name=key, index=i, hex=val), unsafe_allow_html=True)
     i += 1

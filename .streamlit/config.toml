@@ -1,0 +1,10 @@
+[theme]
+primaryColor="#ace"
+backgroundColor="#369"
+secondaryBackgroundColor="#777"
+textColor="#fff"
+
+[server]
+headless=true
+runOnSave=true
+enableStaticServing=true

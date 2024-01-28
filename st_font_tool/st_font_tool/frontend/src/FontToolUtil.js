@@ -3,15 +3,15 @@ const FontToolUtilConstant = {
     <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" >
       <defs>
         <pattern id="smallGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="goldenrod" stroke-width="1"/>
+          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#6e8cb0" stroke-width="1"/>
         </pattern>
         <pattern id="grid" x="25" y="-25" width="100" height="100" patternUnits="userSpaceOnUse">
           <rect width="100" height="100" fill="url(#smallGrid)"/>
-          <path d="M 100 0 L 0 0 0 100" fill="none" stroke="goldenrod" stroke-width="4"/>
+          <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#6e8cb0" stroke-width="4"/>
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#grid)"/>
-      <g transform="scale(+1,-1)" fill="none" stroke="darkgoldenrod" stroke-width=".75">
+      <g transform="scale(+1,-1)" fill="#6e8cb0" stroke="#6e8cb0" stroke-width=".75">
         <text x="30" y="-460">a</text>
         <text x="130" y="-460">b</text>
         <text x="230" y="-460">c</text>
