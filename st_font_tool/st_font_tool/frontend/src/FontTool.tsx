@@ -10,21 +10,19 @@ interface State {
   isFocused: boolean
 }
 class FontTool extends StreamlitComponentBase<State> {
-  public state = { isFocused: false, fontGlyphCodeOut: this.props.args['fontGlyphCode'] }
+  public state = {
+    isFocused: false
+  }
   fontCanvasRef = React.createRef<HTMLCanvasElement>();
   ctx: CanvasRenderingContext2D | null | undefined = null;
   /////////////////////////////////////////////
-  refresh = () => {
-    this.setState({ isFocused: true }, () => this.setState({ isFocused: false }))
-  }
-  /////////////////////////////////////////////
   componentDidUpdate() {
     this.ctx = this.fontCanvasRef?.current?.getContext('2d');
-    if (this.ctx) FontToolUtil.drawImageAndGetSVG(this.ctx, this.props.args['fontGlyphCode']);
-    this.refresh();
+    if (this.ctx) FontToolUtil.drawImageAndGetSVG(this.ctx, this.props.args['font_glyph_code']);
   }
   /////////////////////////////////////////////
   public render = (): ReactNode => {
+    Streamlit.setComponentValue(this.props.args['font_glyph_code'])
     const { theme } = this.props
     const fontCanvasStyle: React.CSSProperties = {}
     fontCanvasStyle.backgroundImage = 'url(data:image/svg+xml;base64,' + btoa(FontToolUtil.constant.svgStrGrid) + ')';
@@ -47,7 +45,8 @@ class FontTool extends StreamlitComponentBase<State> {
     )
   }
   private onClick = (): void => {
-    Streamlit.setComponentValue(this.state.fontGlyphCodeOut)
+    Streamlit.setComponentValue(this.props.args['font_glyph_code'])
+    this.forceUpdate();
   }
   private onMouseEnter = (): void => {
     this.setState({ isFocused: true })

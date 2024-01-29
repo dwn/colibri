@@ -1,4 +1,7 @@
-from streamlit import markdown
+import streamlit as st
+##########################################
+# ASCII FUNCTIONS
+##########################################
 #Converts a character code to a properly escaped and printable character
 def char(i):
   c = '\\' + chr(i)
@@ -10,6 +13,9 @@ def asc(c):
   if len(c) > 1:
     c = c[-1]
   return ord(c)
+##########################################
+# FILE FUNCTIONS
+##########################################
 #Reads multiple files from an array of filenames (or just one file from a string)
 def read(file_paths):
   contents = []
@@ -24,6 +30,24 @@ def read(file_paths):
     except FileNotFoundError:
       contents.append(None)
   return contents[0] if not_array else contents
+##########################################
+# STATE FUNCTIONS
+##########################################
+def init_state(obj):
+  for key, val in obj.items():
+    if key not in st.session_state: st.session_state[key] = val
+def set_state_from_val(keys, val):
+  nested_state = st.session_state
+  if isinstance(keys, str):
+    keys = [keys]
+  for key in keys[:-1]:
+    nested_state = nested_state[key]
+  nested_state[keys[-1]] = val
+def set_state_from_wkey(keys, wkey):
+  set_state_from_val(keys, st.session_state[wkey])
+##########################################
+# COLOR FUNCTIONS
+##########################################
 #Values referenced by spectrum()
 num_spectrum_colors = 7
 spectrum_code = [
@@ -106,15 +130,13 @@ def set_colors(palette):
       blended_color += format(g_total // num_colors, '02x')
       blended_color += format(b_total // num_colors, '02x')
       color[key] = blended_color
-#Display spectrum
-def show_spectrum():
-  markdown('###### spectrum')
-  for i in range(-1, num_spectrum_colors + 2):
-    markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 1px white,0 0 1px white,0 0 2px gray,0 0 2px gray">{index} | {hex} | {nm} nm | {THz} THz</div>'.format(index=i, hex=spectrum(i), nm=spectrum(i, 'nm'), THz=spectrum(i, 'THz')), unsafe_allow_html=True)
-#Display hex colors from palette
+#Display palette colors and spectrum
 def show_colors():
-  markdown('###### color')
+  st.markdown('###### color')
   i = 0
   for key, val in color.items():
-    markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 1px white,0 0 1px white,0 0 2px gray,0 0 2px gray">{name} | {index} | {hex}</div>'.format(name=key, index=i, hex=val), unsafe_allow_html=True)
+    st.markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 1px white,0 0 1px white,0 0 2px black,0 0 2px black">{name} | {index} | {hex}</div>'.format(name=key, index=i, hex=val), unsafe_allow_html=True)
     i += 1
+  st.markdown('###### spectrum')
+  for i in range(-1, num_spectrum_colors + 2):
+    st.markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 1px white,0 0 1px white,0 0 2px black,0 0 2px black">{index} | {hex} | {nm} nm | {THz} THz</div>'.format(index=i, hex=spectrum(i), nm=spectrum(i, 'nm'), THz=spectrum(i, 'THz')), unsafe_allow_html=True)
