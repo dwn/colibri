@@ -60,7 +60,7 @@ with font_tab:
   with st.container(border=True):
     c = st.session_state.font_char_selected
     if c:
-      asc = ut.asc(c)
+      asc = ut.asc(c) - 33 #First 33 are ascii control characters not included in list
       st.text_input(
         label='glyph code',
         label_visibility='collapsed',

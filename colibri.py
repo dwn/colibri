@@ -114,6 +114,9 @@ class File_Manager:
             'direction': input_data.get('direction', 'right-down'),
           }
         }
+        #Fills out the rest of the lines with empty strings
+        num_lines = ret['font_glyph_code'].count('\n')
+        ret['font_glyph_code'] += '\n' * (223 - num_lines)
       else:
         raise ValueError('File at URL unreadable or does not exist')
     return ret
