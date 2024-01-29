@@ -160,6 +160,5 @@ class Book:
       return self.font
     elif key == 'source':
       return self.source
-    # Add more cases as needed
     else:
       raise KeyError(f"Invalid key: {key}")

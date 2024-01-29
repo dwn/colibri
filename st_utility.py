@@ -3,16 +3,9 @@ import streamlit as st
 # ASCII FUNCTIONS
 ##########################################
 #Converts a character code to a properly escaped and printable character
-def char(i):
-  c = '\\' + chr(i)
-  if len(c) > 1 and c != '\\#' and c != '\\*': #Maintains escaping on special markdown characters
-    c = c[1]
-  return c
+def char(i): c = '\\' + chr(i); return (c[1] if len(c) > 1 and c != '\\#' and c != '\\*' else c) #Maintains escaping on special markdown characters
 #Converts back to ascii value taking only the last character, not any escaping
-def asc(c):
-  if len(c) > 1:
-    c = c[-1]
-  return ord(c)
+def asc(c): return (ord(c[-1]) if len(c) > 1 else ord(c))
 ##########################################
 # FILE FUNCTIONS
 ##########################################

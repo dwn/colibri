@@ -4,10 +4,8 @@ import pandas as pd
 import numpy as np
 import colibri
 import st_utility as ut
-try:
-  from st_font_tool import font_tool
-except:
-  from st_font_tool.st_font_tool import font_tool #Dev mode sees it as this path
+try: from st_font_tool import font_tool
+except: from st_font_tool.st_font_tool import font_tool
 #App config
 st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
 st.markdown(f'<style>{ut.read("style.css")}</style>', unsafe_allow_html=True)
@@ -23,22 +21,20 @@ ut.init_state({
 })
 if 'book' not in st.session_state:
   st.session_state.book = colibri.Book()
-  st.session_state.book.init('static/clb/', 'teonaht')
+  st.session_state.book.init('static/clb/', 'cyrillic')
   st.session_state.book.run()
 #Navigation tabs
 with st.container():
-  arrTab = [
+  arr_tab = [
     ':lower_left_fountain_pen:',
     ':ear:',
     ':eye:',
     ':scroll:',
     ':bust_in_silhouette:']
-  fontTab, graphTab, phoneTab, adjustTab, accountTab = st.tabs(arrTab)
+  font_tab, graph_tab, phone_tab, adjust_tab, account_tab = st.tabs(arr_tab)
 ##########################################
-# FONT SECTION
+with font_tab:
 ##########################################
-with fontTab:
-  ##########################################
   with st.expander(st.session_state.font_char_selected if st.session_state.font_char_selected else 'character block', expanded=True):
     char_block_index = st.select_slider('block', label_visibility='collapsed', options=range(0, 6), value=1, key='character_expander_wkey')
     arr_ignore_char_index = [0x20, 0x2b, 0x2d, 0x5c, 0x5f, 0x7c, 0x7f, 0xa0, 0xad,
@@ -64,13 +60,14 @@ with fontTab:
   with st.container(border=True):
     c = st.session_state.font_char_selected
     if c:
+      asc = ut.asc(c)
       st.text_input(
         label='glyph code',
         label_visibility='collapsed',
         placeholder='glyph code',
-        value=st.session_state.book.font['arr_glyph_code'][ut.asc(c)],
+        value=st.session_state.book.font['arr_glyph_code'][asc],
         on_change=ut.set_state_from_wkey,
-        args=[['book', 'font', 'arr_glyph_code', ut.asc(c)], 'font_glyph_text_input_wkey'],
+        args=[['book', 'font', 'arr_glyph_code', asc], 'font_glyph_text_input_wkey'],
         key='font_glyph_text_input_wkey')
-      font_tool(font_glyph_code=st.session_state.book.font['arr_glyph_code'][ut.asc(c)], key='font_tool_wkey')
-      st.session_state.book.font['arr_glyph_code'][ut.asc(c)]
+      font_tool(font_glyph_code=st.session_state.book.font['arr_glyph_code'][asc], key='font_tool_wkey')
+      st.session_state.book.font['arr_glyph_code']
