@@ -36,7 +36,7 @@ with st.container():
 with font_tab:
 ##########################################
   with st.expander(st.session_state.font_char_selected if st.session_state.font_char_selected else 'character block', expanded=True):
-    char_block_index = st.select_slider('block', label_visibility='collapsed', options=range(0, 6), value=1, key='character_expander_wkey')
+    char_block_index = st.select_slider('block', label_visibility='collapsed', options=range(0, 6), value=2, key='character_expander_wkey')
     arr_ignore_char_index = [0x20, 0x2b, 0x2d, 0x5c, 0x5f, 0x7c, 0x7f, 0xa0, 0xad,
                              0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
                              0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f,
@@ -60,14 +60,14 @@ with font_tab:
   with st.container(border=True):
     c = st.session_state.font_char_selected
     if c:
-      asc = ut.asc(c) - 33 #First 33 are ascii control characters not included in list
+      ind = ut.asc(c) - 33 #First 33 are ascii control characters not included in list
       st.text_input(
         label='glyph code',
         label_visibility='collapsed',
         placeholder='glyph code',
-        value=st.session_state.book.font['arr_glyph_code'][asc],
+        value=st.session_state.book.font['arr_glyph_code'][ind],
         on_change=ut.set_state_from_wkey,
-        args=[['book', 'font', 'arr_glyph_code', asc], 'font_glyph_text_input_wkey'],
+        args=[['book', 'font', 'arr_glyph_code', ind], 'font_glyph_text_input_wkey'],
         key='font_glyph_text_input_wkey')
-      font_tool(font_glyph_code=st.session_state.book.font['arr_glyph_code'][asc], key='font_tool_wkey')
+      font_tool(font_glyph_code=st.session_state.book.font['arr_glyph_code'][ind], key='font_tool_wkey')
       st.session_state.book.font['arr_glyph_code']
