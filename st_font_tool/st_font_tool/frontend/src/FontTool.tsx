@@ -27,8 +27,6 @@ class FontTool extends StreamlitComponentBase<State> {
     const fontCanvasStyle: React.CSSProperties = {}
     fontCanvasStyle.backgroundImage = 'url(data:image/svg+xml;base64,' + btoa(FontToolUtil.constant.svgStrGrid) + ')';
     if (theme) {
-      fontCanvasStyle.backgroundColor = this.state.isFocused ?
-        'theme.secondaryBackgroundColor' : 'transparent';
       fontCanvasStyle.color = theme.textColor;
     }
     return (

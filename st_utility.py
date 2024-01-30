@@ -128,8 +128,8 @@ def show_colors():
   st.markdown('###### color')
   i = 0
   for key, val in color.items():
-    st.markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 1px white,0 0 1px white,0 0 2px black,0 0 2px black">{name} | {index} | {hex}</div>'.format(name=key, index=i, hex=val), unsafe_allow_html=True)
+    st.markdown('<div class="color" style="background-color:{hex}; text-shadow:-1px -1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,1px 1px 0 #000">{name} | {index} | {hex}</div>'.format(name=key, index=i, hex=val), unsafe_allow_html=True)
     i += 1
   st.markdown('###### spectrum')
   for i in range(-1, num_spectrum_colors + 2):
-    st.markdown('<div class="color" style="background-color:{hex}; text-shadow:0 0 1px white,0 0 1px white,0 0 2px black,0 0 2px black">{index} | {hex} | {nm} nm | {THz} THz</div>'.format(index=i, hex=spectrum(i), nm=spectrum(i, 'nm'), THz=spectrum(i, 'THz')), unsafe_allow_html=True)
+    st.markdown('<div class="color" style="background-color:{hex}; text-shadow:-1px -1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,1px 1px 0 #000">{index} | {hex} | {nm} nm | {THz} THz</div>'.format(index=i, hex=spectrum(i), nm=spectrum(i, 'nm'), THz=spectrum(i, 'THz')), unsafe_allow_html=True)

@@ -24,10 +24,10 @@ if 'book' not in st.session_state:
   st.session_state.book = colibri.Book()
   st.session_state.book.init('static/clb/', 'cyrillic')
   st.session_state.book.run()
-if st.session_state.splash_image:
-  st.image(
-    'static/img/bkg/colibri.jpg',
-    use_column_width=True)
+#if st.session_state.splash_image:
+#  st.image(
+#    'static/img/bkg/colibri.jpg',
+#    use_column_width=True)
 #Navigation tabs
 arr_tab = [
   ':bust_in_silhouette:',

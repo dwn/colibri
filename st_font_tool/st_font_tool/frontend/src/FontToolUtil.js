@@ -75,7 +75,7 @@ const FontToolUtilConstant = {
     <glyph glyph-name="vbar" unicode="&#x7c;" horiz-adv-x="936" vert-adv-y="1404" d=""/>
     <glyph glyph-name="nbsp" unicode="&#xa0;" horiz-adv-x="[[XSPACE]]" vert-adv-y="[[YSPACE]]" d=""/>
     </font></defs></svg>`,
-  defaultGlyphData: {
+  svgDefaultGlyphData: {
     "&#x21;": {'glyph-name': "exclam", 'horiz-adv-x': "686", 'vert-adv-y': "1872", 'd': "M430 1433V861Q430 816 429 773T424 687T417 598T406 500H285Q279 552 275 597T267 686T263 773T261 861V1433H430ZM218 110Q218 136 227 159T253 199T293 226T342 236Q368 236 391 226T431 199T457 159T467 110Q467 83 458 61T431 21T391 -5T342 -15Q316 -15 293 -6T254 21T228 60T218 110Z"},
     "&#x22;": {'glyph-name': "quotedbl", 'horiz-adv-x': "794", 'vert-adv-y': "1872", 'd': "M307 1433V1143L291 988Q288 956 274 939T229 921Q203 921 189 938T168 988L152 1143V1433H307ZM640 1433V1143L624 988Q621 956 607 939T562 921Q536 921 522 938T501 988L485 1143V1433H640Z"},
     "&#x23;": {'glyph-name': "numbersign", 'horiz-adv-x': "1160", 'vert-adv-y': "1872", 'd': "M790 423L706 0H625Q602 0 586 17T570 61Q570 65 570 68T572 77L643 423H396L325 68Q317 31 295 16T243 0H164L249 423H103Q80 423 67 434T54 474Q54 479 54 485T56 497L64 554H268L333 880H101L114 954Q119 983 137 997T194 1011H352L424 1369Q430 1399 451 1416T503 1433H583L499 1011H746L830 1433H909Q934 1433 950 1418T967 1379Q967 1371 966 1366L893 1011H1105L1092 936Q1087 907 1069 894T1012 880H874L809 554H988Q1012 554 1025 543T1038 502Q1038 497 1038 492T1036 480L1027 423H790ZM415 554H662L727 880H480L415 554Z"},
@@ -557,7 +557,7 @@ export default class FontToolUtil {
     for(let i=0; i<arrFontGlyphCode.length; i++) {
       const svgStr = this.drawImageAndGetSVG(ctx, arrFontGlyphCode[i]);
       const glyphUnicode = '&#x' + (33 + i).toString(16) + ';';
-      const glyphName = FontToolUtilConstant.defaultGlyphData?.[glyphUnicode]?.['glyph-name'];
+      const glyphName = FontToolUtilConstant.svgDefaultGlyphData?.[glyphUnicode]?.['glyph-name'];
       svgFont += this.getSVGGlyph(glyphName, glyphUnicode, 50, svgStr);
     }
     svgFont += FontToolUtilConstant.svgFontCoda;
