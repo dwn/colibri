@@ -31,11 +31,11 @@ with st.container():
     ':eye:',
     ':scroll:',
     ':bust_in_silhouette:']
-  font_tab, graph_tab, phone_tab, adjust_tab, account_tab = st.tabs(arr_tab)
+  font_tab, phone_tab, graph_tab, adjust_tab, account_tab = st.tabs(arr_tab)
 ##########################################
 with font_tab:
 ##########################################
-  with st.expander(st.session_state.font_char_selected if st.session_state.font_char_selected else 'character block', expanded=True):
+  with st.expander(st.session_state.font_char_selected or 'select a character', expanded=True):
     char_block_index = st.select_slider('block', label_visibility='collapsed', options=range(0, 6), value=2, key='character_expander_wkey')
     arr_ignore_char_index = [0x20, 0x2b, 0x2d, 0x5c, 0x5f, 0x7c, 0x7f, 0xa0, 0xad,
                              0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
@@ -49,25 +49,65 @@ with font_tab:
       for col in st.columns([1,1,1,1,1,1,1,1]):
         if i not in arr_ignore_char_index:
           c = ut.char(i)
-          col.button(
+          status = col.button(
             label=c,
             type='primary' if c == st.session_state.font_char_selected else 'secondary',
-            on_click=ut.set_state_from_val,
-            args=['font_char_selected', c],
             key=c)
+          if status:
+            st.session_state.font_char_selected = c
         i += 1
   ##########################################
   with st.container(border=True):
     c = st.session_state.font_char_selected
     if c:
-      ind = ut.asc(c) - 33 #First 33 are ascii control characters not included in list
-      st.text_input(
+      i = ut.asc(c) - 33 #First 33 are ascii control characters not included in list
+      g = st.session_state.book.font['arr_glyph_code'][i]
+      status = st.text_input(
         label='glyph code',
         label_visibility='collapsed',
         placeholder='glyph code',
-        value=st.session_state.book.font['arr_glyph_code'][ind],
-        on_change=ut.set_state_from_wkey,
-        args=[['book', 'font', 'arr_glyph_code', ind], 'font_glyph_text_input_wkey'],
+        value=g,
         key='font_glyph_text_input_wkey')
-      font_tool(font_glyph_code=st.session_state.book.font['arr_glyph_code'][ind], key='font_tool_wkey')
-      st.session_state.book.font['arr_glyph_code']
+      if status:
+        st.session_state.book.font['arr_glyph_code'][i] = status
+      font_tool(
+        font_glyph_code=g,
+        key='font_tool_wkey')
+##########################################
+with phone_tab:
+##########################################
+  with st.expander('phonemes', expanded=True):
+    st.text_area(
+      label='phonemes',
+      label_visibility='collapsed',
+      placeholder='example:\nii,i i,I a,e',
+      height=600,
+      key='phonemes_text_area_wkey')
+  left, right = st.columns([1,1])
+  left.text_area(
+    label='original',
+    height=600,
+    key='phonemes_original_text_area_wkey')
+  right.text_area(
+    label='replaced',
+    height=600,
+    key='phonemes_replaced_text_area_wkey')
+##########################################
+with graph_tab:
+##########################################
+  with st.expander('graphemes', expanded=True):
+    st.text_area(
+      label='graphemes',
+      label_visibility='collapsed',
+      placeholder='example:\nii,i i,I a,e',
+      height=600,
+      key='graphemes_text_area_wkey')
+  left, right = st.columns([1,1])
+  left.text_area(
+    label='original',
+    height=600,
+    key='graphemes_original_text_area_wkey')
+  right.text_area(
+    label='replaced',
+    height=600,
+    key='graphemes_replaced_text_area_wkey')
