@@ -17,21 +17,40 @@ ut.set_colors({
 #ut.show_colors()
 #Init state
 ut.init_state({
+  'splash_image': True,
   'font_char_selected': ''
 })
 if 'book' not in st.session_state:
   st.session_state.book = colibri.Book()
   st.session_state.book.init('static/clb/', 'cyrillic')
   st.session_state.book.run()
+if st.session_state.splash_image:
+  st.image(
+    'static/img/bkg/colibri.jpg',
+    use_column_width=True)
 #Navigation tabs
-with st.container():
-  arr_tab = [
-    ':lower_left_fountain_pen:',
-    ':ear:',
-    ':eye:',
-    ':scroll:',
-    ':bust_in_silhouette:']
-  font_tab, phone_tab, graph_tab, adjust_tab, account_tab = st.tabs(arr_tab)
+arr_tab = [
+  ':bust_in_silhouette:',
+  ':lower_left_fountain_pen:',
+  ':ear:',
+  ':eye:',
+  ':scroll:']
+account_tab, font_tab, phone_tab, graph_tab, adjust_tab = st.tabs(arr_tab)
+##########################################
+with account_tab:
+##########################################
+  with st.expander('language', expanded=True):
+    st.toggle(
+      label='reading mode',
+      key='account_reading_mode_toggle_wkey')
+    st.selectbox(
+      label='file',
+      options=['english', 'russian'],
+      key='account_file_text_input_wkey')
+  with st.expander('profile', expanded=True):
+    st.text_input(
+      label='name',
+      key='account_username_text_input_wkey')
 ##########################################
 with font_tab:
 ##########################################
@@ -76,38 +95,76 @@ with font_tab:
 ##########################################
 with phone_tab:
 ##########################################
-  with st.expander('phonemes', expanded=True):
+  with st.expander('phoneme script', expanded=True):
     st.text_area(
       label='phonemes',
       label_visibility='collapsed',
       placeholder='example:\nii,i i,I a,e',
       height=600,
-      key='phonemes_text_area_wkey')
+      key='phone_text_area_wkey')
   left, right = st.columns([1,1])
   left.text_area(
     label='original',
     height=600,
-    key='phonemes_original_text_area_wkey')
+    key='phone_original_text_area_wkey')
   right.text_area(
-    label='replaced',
+    label='modified',
     height=600,
-    key='phonemes_replaced_text_area_wkey')
+    key='phone_modified_text_area_wkey')
 ##########################################
 with graph_tab:
 ##########################################
-  with st.expander('graphemes', expanded=True):
+  with st.expander('grapheme script', expanded=True):
     st.text_area(
-      label='graphemes',
+      label='graph',
       label_visibility='collapsed',
       placeholder='example:\nii,i i,I a,e',
       height=600,
-      key='graphemes_text_area_wkey')
+      key='graph_text_area_wkey')
   left, right = st.columns([1,1])
   left.text_area(
     label='original',
     height=600,
-    key='graphemes_original_text_area_wkey')
+    key='graph_original_text_area_wkey')
   right.text_area(
-    label='replaced',
+    label='modified',
     height=600,
-    key='graphemes_replaced_text_area_wkey')
+    key='graph_modified_text_area_wkey')
+##########################################
+with adjust_tab:
+##########################################
+  with st.expander('options', expanded=True):
+    st.selectbox(
+      label='size',
+      options=['small','large'],
+      key='adjust_size_select_box_wkey')
+    st.selectbox(
+      label='weight',
+      options=['light', 'bold'],
+      key='adjust_style_select_box_wkey')
+    st.selectbox(
+      label='pen',
+      options=['round', 'medium', 'sharp'],
+      key='adjust_pen_select_box_wkey')
+    st.selectbox(
+      label='direction',
+      options=['right-down', 'left-down'],
+      key='adjust_direction_select_box_wkey')
+    st.select_slider(
+      label='space',
+      options=np.arange(0, 2.1, 0.1),
+      value=.5,
+      format_func=lambda x: '0.5 (default)' if x==.5 else "{:.1f}".format(x),
+      key='adjust_space_number_input_wkey')
+  with st.expander('kerning', expanded=True):
+    left, right = st.columns([1,1])
+    left.text_area(
+      label='kerning script',
+      label_visibility='collapsed',
+      placeholder='example:\n0x30<<0x48',
+      height=400,
+      key='kern_text_area_wkey')
+    right.image(
+      image='static/img/bkg/shadow.jpg')
+  with st.container(border=True):
+    st.markdown('###### page', unsafe_allow_html=True)

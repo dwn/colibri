@@ -31,7 +31,7 @@ def init_state(obj):
     if key not in st.session_state: st.session_state[key] = val
 def set_state_from_val(keys, val):
   nested_state = st.session_state
-  if isinstance(keys, str):
+  if not isinstance(keys, list):
     keys = [keys]
   for key in keys[:-1]:
     nested_state = nested_state[key]

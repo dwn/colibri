@@ -5,6 +5,8 @@ import json
 class Text_Replacer:
   @staticmethod
   def general_in_place_array_function(arr, func, only_leaf_index=-1):
+    if not isinstance(arr, list):
+      arr = [arr]
     for i in range(len(arr)):
       if isinstance(arr[i], list):
         Text_Replacer.general_in_place_array_function(arr[i], func, only_leaf_index)
