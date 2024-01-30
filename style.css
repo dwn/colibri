@@ -11,3 +11,134 @@ button[data-baseweb="tab"] {
 .element-container {
   text-align:center;
 }
+.dark {
+  overflow-wrap: break-word;
+  float: left;
+  background-image: none;
+  background-size: null;
+  background-repeat: null;
+  background-blend-mode: null;
+  background-color: #224;
+  color: #8ef2e8;
+  text-shadow: 0 0 1px slategray;
+  outline: null;
+  outline-offset: null;
+}
+.illuminated {
+  overflow-wrap: break-word;
+  float: left;
+  background-image: url(img/bkg/illuminated.png), linear-gradient(to bottom right, tan, sienna);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: null;
+  background-color: wheat;
+  color: #ffd780;
+  text-shadow: sienna 0px 0px 30px, sienna 0px 0px 30px, gray 0px 0px 3px, gray 0px 0px 3px, black 0px 0px 2px, black 1px 1px 2px, black 1px 1px 1px, black 1px 1px 1px;
+  outline: null;
+  outline-offset: null;
+}
+.terminal {
+  overflow-wrap: break-word;
+  float: left;
+  background-image: linear-gradient(rgba(235, 233, 249, 0.8) 0%, rgba(216, 208, 239, 0.54) 27%, rgba(196, 189, 226, 0.53) 28%, rgba(193, 191, 234, 0.18) 100%), radial-gradient(rgba(0, 85, 150, 0.75), #000032 120%),url(img/bkg/terminal.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: luminosity color;
+  background-color: black;
+  color: white;
+  text-shadow: 0 0 .5rem #c8c8c8;
+  outline: null;
+  outline-offset: null;
+}
+.papyrus {
+  overflow-wrap: break-word;
+  float: left;
+  background-image: linear-gradient(rgba(165, 163, 170, 0.8) 0%, rgba(115, 113, 116, 0.18) 100%), url("img/bkg/papyrus.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: hard-light;
+  background-color: #808080;
+  color: #605040;
+  text-shadow: 0 0 2px #a08040;
+  outline: null;
+  outline-offset: null;
+}
+.fire {
+  overflow-wrap: break-word;
+  float: left;
+  background-image: url(img/bkg/fire.gif);
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: repeat-y;
+  background-blend-mode: null;
+  background-color: black;
+  color: white;
+  text-shadow: rgb(254 252 201) 0px 0px .25rem, rgb(254 236 133) 10px -10px .5rem, rgb(255 174 52) -20px -20px .75rem, rgb(236 118 12) 20px -40px 1rem, rgb(205 70 6) -20px -60px 1.25rem, rgb(151 55 22) 0px -80px 1.5rem, rgb(69 27 14) 10px -90px 1.75rem;
+  outline: null;
+  outline-offset: null;
+}
+.stone {
+  overflow-wrap: break-word;
+  float: left;
+  background-image: linear-gradient(to bottom right, #ccc, #667), url(img/bkg/stone.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: soft-light;
+  background-color: #8abce2;
+  color: steelblue;
+  text-shadow: ivory 1px 1px 1px, #505050 0px 0px 3px, ivory 0px 0px 5px;
+  outline: null;
+  outline-offset: null;
+}
+.stitch {
+  overflow-wrap: break-word;
+  float: left;
+  background-image: url(img/bkg/stitch.png);
+  background-size: null;
+  background-repeat: repeat;
+  background-blend-mode: null;
+  background-color: red;
+  color: #e6e2e2;
+  text-shadow: #555 1px -1px 2px, red -1px 1px 2px;
+  outline: #da0 dashed 2px;
+  outline-offset: -11px;
+}
+.splotch {
+  overflow-wrap: break-word;
+  float: left;
+  background-image: url(img/bkg/splotch.jpg);
+  background-size: null;
+  background-repeat: null;
+  background-blend-mode: null;
+  background-color: black;
+  color: white;
+  text-shadow: black 2px 0px 0px, black -2px 0px 0px, black 0px 2px 0px, black 0px -2px 0px, white 3px 3px 2px, white 3px -3px 2px, white -3px 3px 2px, white -3px -3px 2px, white 4px 4px 1px, white 4px -4px 1px, white -4px 4px 1px, white -4px -4px 1px, white 5px 5px 0px, white 5px -5px 0px, white -5px 5px 0px, white -5px -5px 0px;
+  outline: null;
+  outline-offset: null;
+}
+.shadow {
+  overflow-wrap: break-word;
+  float: left;
+  background-image: url(img/bkg/shadow.jpg);
+  background-size: null;
+  background-repeat: null;
+  background-blend-mode: null;
+  background-color: #e7e5e4;
+  color: #c40;
+  text-shadow: ivory 0px 0px 1px, ivory 0px 0px 1px, ivory 0px 0px 2px, ivory 0px 0px 2px, rgba(175, 175, 175, 0.5) -4px 8px 2px;
+  outline: null;
+  outline-offset: null;
+}
+.plain {
+  overflow-wrap: break-word;
+  float: left;
+  background-image: none;
+  background-size: null;
+  background-repeat: null;
+  background-blend-mode: null;
+  background-color: white;
+  color: black;
+  text-shadow: none;
+  outline: null;
+  outline-offset: null;
+}

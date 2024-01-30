@@ -136,20 +136,43 @@ with adjust_tab:
   with st.expander('options', expanded=True):
     st.selectbox(
       label='size',
-      options=['small','large'],
+      options=[
+        'small',
+        'large'],
       key='adjust_size_select_box_wkey')
     st.selectbox(
       label='weight',
-      options=['light', 'bold'],
+      options=[
+        'light',
+        'bold'],
       key='adjust_style_select_box_wkey')
     st.selectbox(
       label='pen',
-      options=['round', 'medium', 'sharp'],
+      options=[
+        'round',
+        'medium',
+        'sharp'],
       key='adjust_pen_select_box_wkey')
     st.selectbox(
       label='direction',
-      options=['right-down', 'left-down'],
+      options=[
+        'right-down',
+        'left-down'],
       key='adjust_direction_select_box_wkey')
+    st.selectbox(
+      label='theme',
+      options=[
+        'plain',
+        'dark',
+        'illuminated',
+        'terminal',
+        'papyrus',
+        'fire',
+        'stone',
+        'stitch',
+        'splotch',
+        'shadow'],
+      key='adjust_theme_select_box_wkey')
     st.select_slider(
       label='space',
       options=np.arange(0, 2.1, 0.1),
