@@ -9,12 +9,6 @@ except: from st_font_tool.st_font_tool import font_tool
 #App config
 st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
 st.markdown(f'<style>{ut.read("style.css")}</style>', unsafe_allow_html=True)
-#ut.num_spectrum_colors = 30
-ut.set_colors({
-  'gold': [2,3,8,8,8],
-  'brown': [2,-1]
-})
-#ut.show_colors()
 #Init state
 ut.init_state({
   'splash_image': True,
@@ -30,7 +24,11 @@ if 'book' not in st.session_state:
 #    'static/img/bkg/colibri.jpg',
 #    use_column_width=True)
 st.session_state.num_runs += 1
-st.session_state.num_runs
+#Debug
+#ut.num_spectrum_colors = 30
+#ut.set_colors({ 'gold': [2,3,8,8,8], 'brown': [2,-1] })
+#ut.show_colors()
+#st.session_state.num_runs
 #Navigation tabs
 arr_tab = [
   ':bust_in_silhouette:',
