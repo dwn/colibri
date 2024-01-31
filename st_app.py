@@ -18,7 +18,8 @@ ut.set_colors({
 #Init state
 ut.init_state({
   'splash_image': True,
-  'font_char_selected': ''
+  'font_char_selected': '',
+  'num_runs': 0,
 })
 if 'book' not in st.session_state:
   st.session_state.book = colibri.Book()
@@ -28,6 +29,8 @@ if 'book' not in st.session_state:
 #  st.image(
 #    'static/img/bkg/colibri.jpg',
 #    use_column_width=True)
+st.session_state.num_runs += 1
+st.session_state.num_runs
 #Navigation tabs
 arr_tab = [
   ':bust_in_silhouette:',
@@ -68,29 +71,27 @@ with font_tab:
       for col in st.columns([1,1,1,1,1,1,1,1]):
         if i not in arr_ignore_char_index:
           c = ut.char(i)
-          status = col.button(
+          col.button(
             label=c,
             type='primary' if c == st.session_state.font_char_selected else 'secondary',
+            on_click=lambda c=c: st.session_state.update(font_char_selected=c),
             key=c)
-          if status:
-            st.session_state.font_char_selected = c
         i += 1
   ##########################################
   with st.container(border=True):
-    c = st.session_state.font_char_selected
-    if c:
-      i = ut.asc(c) - 33 #First 33 are ascii control characters not included in list
-      g = st.session_state.book.font['arr_glyph_code'][i]
-      status = st.text_input(
+    c_sel = st.session_state.font_char_selected
+    if c_sel:
+      i_sel = ut.asc(c_sel) - 33 #First 33 are ascii control characters not included in list
+      g_sel = st.session_state.book.font['arr_glyph_code'][i_sel]
+      st.text_input(
         label='glyph code',
         label_visibility='collapsed',
         placeholder='glyph code',
-        value=g,
+        value=st.session_state.book.font['arr_glyph_code'][i_sel],
+        on_change=lambda g_sel=g_sel: st.session_state.update(font_glyph_code=g_sel),
         key='font_glyph_text_input_wkey')
-      if status:
-        st.session_state.book.font['arr_glyph_code'][i] = status
       font_tool(
-        font_glyph_code=g,
+        font_glyph_code=st.session_state.book.font['arr_glyph_code'][i_sel],
         key='font_tool_wkey')
 ##########################################
 with phone_tab:

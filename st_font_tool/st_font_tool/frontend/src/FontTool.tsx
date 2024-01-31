@@ -22,7 +22,6 @@ class FontTool extends StreamlitComponentBase<State> {
   }
   /////////////////////////////////////////////
   public render = (): ReactNode => {
-    Streamlit.setComponentValue(this.props.args['font_glyph_code'])
     const { theme } = this.props
     const fontCanvasStyle: React.CSSProperties = {}
     fontCanvasStyle.backgroundImage = 'url(data:image/svg+xml;base64,' + btoa(FontToolUtil.constant.svgStrGrid) + ')';
