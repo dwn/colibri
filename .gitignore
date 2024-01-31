@@ -1,3 +1,5 @@
+secrets.toml
+.venv/
 # Node.js
 node_modules/
 # Byte-compiled / optimized / DLL files
