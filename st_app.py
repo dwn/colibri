@@ -40,10 +40,10 @@ account_tab, font_tab, phone_tab, graph_tab, adjust_tab = st.tabs(arr_tab)
 ##########################################
 with account_tab:
 ##########################################
+  st.toggle(
+    label='reading mode',
+    key='account_reading_mode_toggle_wkey')
   with st.expander('language', expanded=True):
-    st.toggle(
-      label='reading mode',
-      key='account_reading_mode_toggle_wkey')
     st.selectbox(
       label='file',
       options=['english', 'russian'],
@@ -116,7 +116,8 @@ with phone_tab:
     height=600,
     on_change=update_phone_original,
     key='phone_original_text_area_wkey')
-  right.container(height=600).markdown('<span style="white-space: pre-line">{}</span>'.format(state.book.phone['text'][0]), unsafe_allow_html=True)
+  with right:
+    html('<span style="white-space: pre-line; font-family: monospace; color: white">{}</span>'.format(state.book.phone['text'][0]), height=600)
 ##########################################
 with graph_tab:
 ##########################################
@@ -142,7 +143,8 @@ with graph_tab:
     height=600,
     on_change=update_graph_original,
     key='graph_original_text_area_wkey')
-  right.container(height=600).markdown('<span style="white-space: pre-line">{}</span>'.format(state.book.graph['text'][0]), unsafe_allow_html=True)
+  with right:
+    html('<span style="white-space: pre-line; font-family: monospace; color: white">{}</span>'.format(state.book.graph['text'][0]), height=600)
 ##########################################
 with adjust_tab:
 ##########################################
