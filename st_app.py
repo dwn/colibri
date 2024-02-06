@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit import session_state as state
 from streamlit.components.v1 import html
 import pandas as pd
 import numpy as np
@@ -10,25 +11,24 @@ except: from st_font_tool.st_font_tool import font_tool
 st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
 st.markdown(f'<style>{ut.read("style.css")}</style>', unsafe_allow_html=True)
 #Init state
+if 'book' not in state:
+  state.book = colibri.Book()
+  state.book.init('static/clb/', 'ignota')
+  state.book.run()
 ut.init_state({
-  'splash_image': True,
   'font_char_selected': '',
   'num_runs': 0,
+  'phone_script_text_area_wkey': state.book.source['phone_replace'],
+  'phone_original_text_area_wkey': state.book.source['book_pages'][0],
+  'graph_script_text_area_wkey': state.book.source['graph_replace'],
+  'graph_original_text_area_wkey': state.book.source['book_pages'][0],
 })
-if 'book' not in st.session_state:
-  st.session_state.book = colibri.Book()
-  st.session_state.book.init('static/clb/', 'cyrillic')
-  st.session_state.book.run()
-#if st.session_state.splash_image:
-#  st.image(
-#    'static/img/bkg/colibri.jpg',
-#    use_column_width=True)
-st.session_state.num_runs += 1
+state.num_runs += 1
+state.num_runs
 #Debug
 #ut.num_spectrum_colors = 30
 #ut.set_colors({ 'gold': [2,3,8,8,8], 'brown': [2,-1] })
 #ut.show_colors()
-#st.session_state.num_runs
 #Navigation tabs
 arr_tab = [
   ':bust_in_silhouette:',
@@ -55,7 +55,7 @@ with account_tab:
 ##########################################
 with font_tab:
 ##########################################
-  with st.expander(st.session_state.font_char_selected or 'select a character', expanded=True):
+  with st.expander(state.font_char_selected or 'select a character', expanded=True):
     char_block_index = st.select_slider('block', label_visibility='collapsed', options=range(0, 6), value=2, key='character_expander_wkey')
     arr_ignore_char_index = [0x20, 0x2b, 0x2d, 0x5c, 0x5f, 0x7c, 0x7f, 0xa0, 0xad,
                              0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
@@ -71,64 +71,78 @@ with font_tab:
           c = ut.char(i)
           col.button(
             label=c,
-            type='primary' if c == st.session_state.font_char_selected else 'secondary',
-            on_click=lambda c=c: st.session_state.update(font_char_selected=c),
+            type='primary' if c == state.font_char_selected else 'secondary',
+            on_click=lambda c=c: state.update(font_char_selected=c),
             key=c)
         i += 1
   ##########################################
   with st.container(border=True):
-    c_sel = st.session_state.font_char_selected
+    c_sel = state.font_char_selected
     if c_sel:
       i_sel = ut.asc(c_sel) - 33 #First 33 are ascii control characters not included in list
-      g_sel = st.session_state.book.font['arr_glyph_code'][i_sel]
+      g_sel = state.book.font['arr_glyph_code'][i_sel]
       st.text_input(
         label='glyph code',
         label_visibility='collapsed',
         placeholder='glyph code',
-        value=st.session_state.book.font['arr_glyph_code'][i_sel],
-        on_change=lambda g_sel=g_sel: st.session_state.update(font_glyph_code=g_sel),
+        value=g_sel,
+        on_change=lambda g_sel=g_sel: state.update(font_glyph_code=g_sel),
         key='font_glyph_text_input_wkey')
       font_tool(
-        font_glyph_code=st.session_state.book.font['arr_glyph_code'][i_sel],
+        font_glyph_code=g_sel,
         key='font_tool_wkey')
 ##########################################
 with phone_tab:
 ##########################################
-  with st.expander('phoneme script', expanded=True):
-    st.text_area(
-      label='phonemes',
+  def update_phone_script():
+    ut.set_state_from_wkey(['book','source','phone_replace'], 'phone_script_text_area_wkey')
+    state.book.update()
+    state.book.run()
+  def update_phone_original():
+    ut.set_state_from_wkey(['book','source','book_pages',0], 'phone_original_text_area_wkey')
+    state.book.update()
+    state.book.run()
+  st.expander('phoneme script', expanded=True).text_area(
+      label='script',
       label_visibility='collapsed',
       placeholder='example:\nii,i i,I a,e',
       height=600,
-      key='phone_text_area_wkey')
+      on_change=update_phone_script,
+      key='phone_script_text_area_wkey')
   left, right = st.columns([1,1])
   left.text_area(
     label='original',
+    label_visibility='collapsed',
     height=600,
+    on_change=update_phone_original,
     key='phone_original_text_area_wkey')
-  right.text_area(
-    label='modified',
-    height=600,
-    key='phone_modified_text_area_wkey')
+  right.container(height=600).markdown('<span style="white-space: pre-line">{}</span>'.format(state.book.phone['text'][0]), unsafe_allow_html=True)
 ##########################################
 with graph_tab:
 ##########################################
-  with st.expander('grapheme script', expanded=True):
-    st.text_area(
-      label='graph',
+  def update_graph_script():
+    ut.set_state_from_wkey(['book','source','graph_replace'], 'graph_script_text_area_wkey')
+    state.book.update()
+    state.book.run()
+  def update_graph_original():
+    ut.set_state_from_wkey(['book','source','book_pages',0], 'graph_original_text_area_wkey')
+    state.book.update()
+    state.book.run()
+  st.expander('grapheme script', expanded=True).text_area(
+      label='script',
       label_visibility='collapsed',
       placeholder='example:\nii,i i,I a,e',
       height=600,
-      key='graph_text_area_wkey')
+      on_change=update_graph_script,
+      key='graph_script_text_area_wkey')
   left, right = st.columns([1,1])
   left.text_area(
     label='original',
+    label_visibility='collapsed',
     height=600,
+    on_change=update_graph_original,
     key='graph_original_text_area_wkey')
-  right.text_area(
-    label='modified',
-    height=600,
-    key='graph_modified_text_area_wkey')
+  right.container(height=600).markdown('<span style="white-space: pre-line">{}</span>'.format(state.book.graph['text'][0]), unsafe_allow_html=True)
 ##########################################
 with adjust_tab:
 ##########################################

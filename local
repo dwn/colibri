@@ -13,8 +13,9 @@ Then in new terminal:
 ./local
 ********************************************************
 "
+COMPONENT=st_font_tool
 ST_DEV_MODE='0'
-if [ "$1" == "component" ] || [ "$1" == "dev" ]; then
+if [ "$1" == "component" ] || [ "$1" == "app" ]; then
   echo "*** DEV MODE ***"
   ST_DEV_MODE='1'
 fi
@@ -34,12 +35,12 @@ if [ "$1" == "component" ] || [ -z "$1" ]; then
   #        ├── .prettierc
   #        ├── package-lock.json
   #        └── tsconfig.json
-  (cd st_font_tool/st_font_tool/frontend && npm install && npm run build && if [ "$ST_DEV_MODE" == "1" ]; then npm run start; fi)
+  (cd "${COMPONENT}/${COMPONENT}/frontend" && npm install && npm run build && if [ "$ST_DEV_MODE" == "1" ]; then npm run start; fi)
 fi
 if [ "$1" == "app" ] || [ -z "$1" ]; then
   OPTS=""
   if [ "$ST_DEV_MODE" == "1" ]; then
     OPTS="-e"
   fi
-  pip install ${OPTS} ./st_font_tool && streamlit run st_app.py
+  pip install ${OPTS} "./${COMPONENT}" && streamlit run st_app.py
 fi

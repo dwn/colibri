@@ -142,10 +142,13 @@ class Book:
     self.phone['section'] = {}
     self.source['font_options'] = {}
     self.source.update(File_Manager.load_url_file(url))
+    self.update()
+  ##########################################
+  def update(self):
     self.graph['arr_replace'] = Text_Replacer.init(self.source['graph_replace'], self.graph['section'])
     self.phone['arr_replace'] = Text_Replacer.init(self.source['phone_replace'], self.phone['section'])
     self.font['arr_glyph_code'] = self.source['font_glyph_code'].split('\n') if self.source['font_glyph_code'] else []
-    self.font['arr_kerning_code'] = self.source['font_kerning_code'].split('\n') if self.source['font_kerning_code'] else []
+    self.font['arr_kerning_code'] = self.source['font_kerning_code'].split('\n') if self.source['font_kerning_code'] else []    
   ##########################################
   def run(self):
     num_book_pages = len(self.source['book_pages']) if self.source['book_pages'] else 1
