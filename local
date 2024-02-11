@@ -21,7 +21,7 @@ if [ "$1" == "component" ] || [ "$1" == "app" ]; then
 fi
 if [ "$1" == "component" ] || [ -z "$1" ]; then
   #How to develop a new component for streamlit from https://github.com/streamlit/component-template
-  #├── build/               <- where py build is generated 
+  #├── build/               <- where py build is generated
   #├── MANIFEST.in          <- change
   #├── setup.py             <- name="X"
   #└── st_tool              <- folder name

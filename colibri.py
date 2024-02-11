@@ -74,12 +74,12 @@ class File_Manager:
   def new_project():
     return {
       'book_page_number': 0,
-      'book_pages': [''],
+      'arr_book_page': [''],
       'graph_replace': '',
       'phone_replace': '',
       'font_glyph_code': '',
       'font_kerning_code': '',
-      'font_options': {
+      'options': {
         'pen': 'medium',
         'size': 'large',
         'space': '.5',
@@ -89,25 +89,26 @@ class File_Manager:
       }
     }
   @staticmethod
-  def load_url_file(url=None):
+  def load_file_url(file_url=None):
     ret = {}
     input_data = {}
-    f = open(url, 'r')
+    f = open(file_url, 'r')
     text = f.read()
     f.close()
     input_data = json.loads(text.split('<desc>')[1].split('</desc>')[0] if '<desc>' in text else '{}')
-    if input_data.get('book_pages'):
+    if input_data.get('arr_book_page'): #Current format
       ret = input_data
-    else:
+    else: #Legacy format
       if text:
         ret = {
+          'origin_file_url': file_url,
           'book_page_number': 0,
-          'book_pages': input_data.get('user-text', '').split('{br}\n') or [input_data.get('user-text', '')],
+          'arr_book_page': input_data.get('user-text', '').split('{br}\n') or [input_data.get('user-text', '')],
           'graph_replace': input_data.get('grapheme-map', ''),
           'phone_replace': input_data.get('phoneme-map', ''),
           'font_glyph_code': input_data.get('font-code', ''),
           'font_kerning_code': input_data.get('kerning-map', ''),
-          'font_options': {
+          'options': {
             'pen': input_data.get('pen', 'medium'),
             'size': input_data.get('size', 'large'),
             'space': input_data.get('space', '.5'),
@@ -127,22 +128,22 @@ class File_Manager:
 ##########################################
 class Book:
   def __init__(self):
-    self.font = {'url': ''}
+    self.font = {}
     self.graph = {'section': {}}
     self.phone = {'section': {}}
-    self.source = {'font_options': {}}
+    self.source = {'origin_file_url': '', 'options': {}}
     self.source.update(File_Manager.new_project())
   ##########################################
-  def init(self, library_url, book_title):
-    self.title = book_title
-    self.library_url = library_url
-    url = library_url + book_title + '.svg'
-    self.font['url'] = url
-    self.graph['section'] = {}
-    self.phone['section'] = {}
-    self.source['font_options'] = {}
-    self.source.update(File_Manager.load_url_file(url))
-    self.update()
+  def init(self, origin_file_url=''):
+    self.font = {}
+    self.graph = {'section': {}}
+    self.phone = {'section': {}}
+    self.source = {'origin_file_url': origin_file_url, 'options': {}}
+    if origin_file_url: #Load from file
+      self.source.update(File_Manager.load_file_url(origin_file_url))
+      self.update()
+    else: #Set to empty book
+      self.source.update(File_Manager.new_project())
   ##########################################
   def update(self):
     self.graph['arr_replace'] = Text_Replacer.init(self.source['graph_replace'], self.graph['section'])
@@ -151,11 +152,11 @@ class Book:
     self.font['arr_kerning_code'] = self.source['font_kerning_code'].split('\n') if self.source['font_kerning_code'] else []    
   ##########################################
   def run(self):
-    num_book_pages = len(self.source['book_pages']) if self.source['book_pages'] else 1
+    num_book_pages = len(self.source['arr_book_page']) if self.source['arr_book_page'] else 1
     if self.source['book_page_number'] >= num_book_pages:
       self.source['book_page_number'] = num_book_pages - 1
-    self.graph['text'] = [self.source['book_pages'][self.source['book_page_number']]]
-    self.phone['text'] = [self.source['book_pages'][self.source['book_page_number']]]
+    self.graph['text'] = [self.source['arr_book_page'][self.source['book_page_number']]]
+    self.phone['text'] = [self.source['arr_book_page'][self.source['book_page_number']]]
     Text_Replacer.run(self.graph['text'], 0, self.graph['arr_replace'], self.graph['section'])
     Text_Replacer.run(self.phone['text'], 0, self.phone['arr_replace'], self.phone['section'])
   ##########################################

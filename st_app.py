@@ -5,30 +5,56 @@ import pandas as pd
 import numpy as np
 import colibri
 import st_utility as ut
+from st_supabase import db
+from streamlit_shortcuts import add_keyboard_shortcuts
+from os import listdir
 try: from st_font_tool import font_tool
 except: from st_font_tool.st_font_tool import font_tool
+##########################################
+# INIT
+##########################################
 #App config
-st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
+#st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
 st.markdown(f'<style>{ut.read("style.css")}</style>', unsafe_allow_html=True)
-#Init state
+#Book state variable
 if 'book' not in state:
   state.book = colibri.Book()
-  state.book.init('static/clb/', 'ignota')
+  state.book.init('static/clb/NEW.svg')
   state.book.run()
+#Other state variables
 ut.init_state({
-  'font_char_selected': '',
   'num_runs': 0,
+  'bool_saved': False,
+  'autosave_interval_sec': 20,
+  'font_char_selected': '',
+  'library': listdir('static/clb/'),
   'phone_script_text_area_wkey': state.book.source['phone_replace'],
-  'phone_original_text_area_wkey': state.book.source['book_pages'][0],
+  'phone_original_text_area_wkey': state.book.source['arr_book_page'][0],
   'graph_script_text_area_wkey': state.book.source['graph_replace'],
-  'graph_original_text_area_wkey': state.book.source['book_pages'][0],
+  'graph_original_text_area_wkey': state.book.source['arr_book_page'][0],
 })
-state.num_runs += 1
-state.num_runs
-#Debug
+#Update num_runs
+#Set some color names
 #ut.num_spectrum_colors = 30
 #ut.set_colors({ 'gold': [2,3,8,8,8], 'brown': [2,-1] })
 #ut.show_colors()
+#Save button and hotkey
+with st.expander(':green[saved]' if state.bool_saved else ':orange[unsaved (alt+enter)]', expanded=True):
+  state.num_runs += 1
+  def save():
+    db.table('colibri_source').insert(
+      [{'colibri_source': state.book.source}]
+    ).execute()
+    state.bool_saved = True
+  col0, col1, col2 = st.columns([1,1,1])
+  col0.write(':gray[{} runs]'.format(state.num_runs))
+  col1.button('save', on_click=save)
+  col2.write('{}'.format(state.book.source['origin_file_url']))
+  add_keyboard_shortcuts({
+    'Alt+Enter': 'save',
+  })
+#arr_source = db.query("*", table="colibri_source").execute()
+#state.book.source
 #Navigation tabs
 arr_tab = [
   ':bust_in_silhouette:',
@@ -40,28 +66,38 @@ account_tab, font_tab, phone_tab, graph_tab, adjust_tab = st.tabs(arr_tab)
 ##########################################
 with account_tab:
 ##########################################
-  st.toggle(
-    label='reading mode',
-    key='account_reading_mode_toggle_wkey')
+  def select_from_library():
+    state.book.init('static/clb/' + state.account_library_text_input_wkey)
+    state.book.run()
   with st.expander('language', expanded=True):
     st.selectbox(
-      label='file',
+      label='your projects',
       options=['english', 'russian'],
-      key='account_file_text_input_wkey')
+      key='account_your_projects_text_input_wkey')
+    st.selectbox(
+      label='library',
+      options=state.library,
+      on_change=select_from_library,
+      key='account_library_text_input_wkey')
   with st.expander('profile', expanded=True):
     st.text_input(
       label='name',
       key='account_username_text_input_wkey')
+    st.radio(
+      label='mode',
+      options=['create','read','chat'],
+      key='account_mode_toggle_wkey')
 ##########################################
 with font_tab:
 ##########################################
   with st.expander(state.font_char_selected or 'select a character', expanded=True):
     char_block_index = st.select_slider('block', label_visibility='collapsed', options=range(0, 6), value=2, key='character_expander_wkey')
-    arr_ignore_char_index = [0x20, 0x2b, 0x2d, 0x5c, 0x5f, 0x7c, 0x7f, 0xa0, 0xad,
-                             0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
-                             0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f,
-                             0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97,
-                             0x98, 0x99, 0x9a, 0x9b, 0x9c, 0x9d, 0x9e, 0x9f]
+    arr_ignore_char_index = [
+      0x20, 0x2b, 0x2d, 0x5c, 0x5f, 0x7c, 0x7f, 0xa0, 0xad,
+      0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
+      0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f,
+      0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97,
+      0x98, 0x99, 0x9a, 0x9b, 0x9c, 0x9d, 0x9e, 0x9f]
     arr_first_char_index_in_block = [ 0x20, 0x40, 0x60, 0xa0, 0xc0, 0xe0 ]
     first_char_index = arr_first_char_index_in_block[char_block_index]
     for i_begin in range(first_char_index, first_char_index + 32, 8):
@@ -99,7 +135,7 @@ with phone_tab:
     state.book.update()
     state.book.run()
   def update_phone_original():
-    ut.set_state_from_wkey(['book','source','book_pages',0], 'phone_original_text_area_wkey')
+    ut.set_state_from_wkey(['book','source','arr_book_page',0], 'phone_original_text_area_wkey')
     state.book.update()
     state.book.run()
   st.expander('phoneme script', expanded=True).text_area(
@@ -117,7 +153,7 @@ with phone_tab:
     on_change=update_phone_original,
     key='phone_original_text_area_wkey')
   with right:
-    html('<span style="white-space: pre-line; font-family: monospace; color: white">{}</span>'.format(state.book.phone['text'][0]), height=600)
+    html('<body style="background-color: #f0ead6"><span style="white-space: pre-line; font-family: monospace; color: charcoal">{}</span>'.format(state.book.phone['text'][0]), height=600)
 ##########################################
 with graph_tab:
 ##########################################
@@ -126,7 +162,7 @@ with graph_tab:
     state.book.update()
     state.book.run()
   def update_graph_original():
-    ut.set_state_from_wkey(['book','source','book_pages',0], 'graph_original_text_area_wkey')
+    ut.set_state_from_wkey(['book','source','arr_book_page',0], 'graph_original_text_area_wkey')
     state.book.update()
     state.book.run()
   st.expander('grapheme script', expanded=True).text_area(
@@ -144,7 +180,7 @@ with graph_tab:
     on_change=update_graph_original,
     key='graph_original_text_area_wkey')
   with right:
-    html('<span style="white-space: pre-line; font-family: monospace; color: white">{}</span>'.format(state.book.graph['text'][0]), height=600)
+    html('<body style="background-color: #f0ead6"><span style="white-space: pre-line; font-family: monospace; color: charcoal">{}</span>'.format(state.book.graph['text'][0]), height=600)
 ##########################################
 with adjust_tab:
 ##########################################
