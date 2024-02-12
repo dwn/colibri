@@ -15,7 +15,9 @@ except: from st_font_tool.st_font_tool import font_tool
 # INIT
 ##########################################
 #App config
-#st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
+if 'bool_configured' not in state:
+  st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
+  state.bool_configured = True
 st.markdown(f'<style>{ut.read("style.css")}</style>', unsafe_allow_html=True)
 #Book state variable
 if 'book' not in state:
@@ -24,7 +26,7 @@ if 'book' not in state:
   state.book.update()
   state.book.run()
 #Other state variables
-def init_app_state(bool_first_time_only=True):
+def init_app_state(bool_overwrite=False):
   ut.init_state({
     'num_runs': 0,
     'bool_saved': False,
@@ -35,7 +37,7 @@ def init_app_state(bool_first_time_only=True):
     'phone_original_text_area_wkey': state.book.source['arr_book_page'][0],
     'graph_script_text_area_wkey': state.book.source['graph_replace'],
     'graph_original_text_area_wkey': state.book.source['arr_book_page'][0],
-  }, bool_first_time_only=bool_first_time_only)
+  }, bool_overwrite=bool_overwrite)
   state.num_runs += 1
 init_app_state()
 with st.expander('{} runs'.format(state.num_runs)):
@@ -74,7 +76,7 @@ with account_tab:
     state.book.init('static/clb/' + state.account_library_text_input_wkey)
     state.book.update()
     state.book.run()
-    init_app_state(bool_first_time_only=False)
+    init_app_state(bool_overwrite=True)
   with st.expander('language', expanded=True):
     st.selectbox(
       label='your projects',

@@ -12,9 +12,9 @@ def asc(c): return (ord(c[-1]) if len(c) > 1 else ord(c))
 ##########################################
 # STREAMLIT STATE FUNCTIONS
 ##########################################
-def init_state(obj, bool_first_time_only=True):
+def init_state(obj, bool_overwrite=False):
   for key, val in obj.items():
-    if not bool_first_time_only or key not in st.session_state: st.session_state[key] = val
+    if bool_overwrite or key not in st.session_state: st.session_state[key] = val
 def set_state_from_val(keys, val):
   nested_state = st.session_state
   if not isinstance(keys, list):
