@@ -1,4 +1,5 @@
 import json
+import st_utility as ut
 ##########################################
 # Static class Text_Replacer
 ##########################################
@@ -79,6 +80,7 @@ class File_Manager:
       'phone_replace': '',
       'font_glyph_code': '',
       'font_kerning_code': '',
+      'note': '',
       'options': {
         'pen': 'medium',
         'size': 'large',
@@ -95,19 +97,20 @@ class File_Manager:
     f = open(file_url, 'r')
     text = f.read()
     f.close()
-    input_data = json.loads(text.split('<desc>')[1].split('</desc>')[0] if '<desc>' in text else '{}')
+    input_data = json.loads(text.split('<desc>')[1].split('</desc>')[0] if '<desc>' in text else text)
     if input_data.get('arr_book_page'): #Current format
       ret = input_data
     else: #Legacy format
       if text:
         ret = {
-          'origin_file_url': file_url,
+          'title': ut.url_basename(file_url.split('.')[0]),
           'book_page_number': 0,
           'arr_book_page': input_data.get('user-text', '').split('{br}\n') or [input_data.get('user-text', '')],
           'graph_replace': input_data.get('grapheme-map', ''),
           'phone_replace': input_data.get('phoneme-map', ''),
           'font_glyph_code': input_data.get('font-code', ''),
           'font_kerning_code': input_data.get('kerning-map', ''),
+          'note': input_data.get('note', ''),
           'options': {
             'pen': input_data.get('pen', 'medium'),
             'size': input_data.get('size', 'large'),
@@ -131,25 +134,25 @@ class Book:
     self.font = {}
     self.graph = {'section': {}}
     self.phone = {'section': {}}
-    self.source = {'origin_file_url': '', 'options': {}}
+    self.source = {'options': {}}
     self.source.update(File_Manager.new_project())
   ##########################################
-  def init(self, origin_file_url=''):
+  def init(self, file_url='', new_project=False):
     self.font = {}
     self.graph = {'section': {}}
     self.phone = {'section': {}}
-    self.source = {'origin_file_url': origin_file_url, 'options': {}}
-    if origin_file_url: #Load from file
-      self.source.update(File_Manager.load_file_url(origin_file_url))
+    self.source = {'options': {}}
+    if file_url: #Load from file
+      self.source.update(File_Manager.load_file_url(file_url))
       self.update()
-    else: #Set to empty book
+    if new_project: #Clear data and set to empty book
       self.source.update(File_Manager.new_project())
   ##########################################
   def update(self):
     self.graph['arr_replace'] = Text_Replacer.init(self.source['graph_replace'], self.graph['section'])
     self.phone['arr_replace'] = Text_Replacer.init(self.source['phone_replace'], self.phone['section'])
     self.font['arr_glyph_code'] = self.source['font_glyph_code'].split('\n') if self.source['font_glyph_code'] else []
-    self.font['arr_kerning_code'] = self.source['font_kerning_code'].split('\n') if self.source['font_kerning_code'] else []    
+    self.font['arr_kerning_code'] = self.source['font_kerning_code'].split('\n') if self.source['font_kerning_code'] else []
   ##########################################
   def run(self):
     num_book_pages = len(self.source['arr_book_page']) if self.source['arr_book_page'] else 1

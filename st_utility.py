@@ -1,11 +1,38 @@
 import streamlit as st
+import os
+import posixpath
+from urllib.parse import urlsplit, unquote
 ##########################################
 # ASCII FUNCTIONS
 ##########################################
-#Converts a character code to a properly escaped and printable character
-def char(i): c = '\\' + chr(i); return (c[1] if len(c) > 1 and c != '\\#' and c != '\\*' else c) #Maintains escaping on special markdown characters
-#Converts back to ascii value taking only the last character, not any escaping
+#Converts a character code to a properly escaped and printable character, maintaining escaping on special markdown characters
+def char(i): c = '\\' + chr(i); return (c[1] if len(c) > 1 and c != '\\#' and c != '\\*' else c)
+#Converts character string to ascii value, taking only the last character, not any escaping
 def asc(c): return (ord(c[-1]) if len(c) > 1 else ord(c))
+##########################################
+# STREAMLIT STATE FUNCTIONS
+##########################################
+def init_state(obj, bool_first_time_only=True):
+  for key, val in obj.items():
+    if not bool_first_time_only or key not in st.session_state: st.session_state[key] = val
+def set_state_from_val(keys, val):
+  nested_state = st.session_state
+  if not isinstance(keys, list):
+    keys = [keys]
+  for key in keys[:-1]:
+    nested_state = nested_state[key]
+  nested_state[keys[-1]] = val
+def set_state_from_wkey(keys, wkey):
+  set_state_from_val(keys, st.session_state[wkey])
+##########################################
+# URL FUNCTIONS
+##########################################
+def url_basename(url):
+  urlpath = urlsplit(url).path
+  basename = posixpath.basename(unquote(urlpath))
+  if (os.path.basename(basename) != basename or unquote(posixpath.basename(urlpath)) != basename):
+    raise ValueError #Reject '%2f' or 'dir%5Cbasename.ext' on Windows
+  return basename
 ##########################################
 # FILE FUNCTIONS
 ##########################################
@@ -23,21 +50,6 @@ def read(file_paths):
     except FileNotFoundError:
       contents.append(None)
   return contents[0] if not_array else contents
-##########################################
-# STATE FUNCTIONS
-##########################################
-def init_state(obj):
-  for key, val in obj.items():
-    if key not in st.session_state: st.session_state[key] = val
-def set_state_from_val(keys, val):
-  nested_state = st.session_state
-  if not isinstance(keys, list):
-    keys = [keys]
-  for key in keys[:-1]:
-    nested_state = nested_state[key]
-  nested_state[keys[-1]] = val
-def set_state_from_wkey(keys, wkey):
-  set_state_from_val(keys, st.session_state[wkey])
 ##########################################
 # COLOR FUNCTIONS
 ##########################################

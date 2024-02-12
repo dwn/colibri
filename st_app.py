@@ -1,3 +1,5 @@
+import json
+import os
 import streamlit as st
 from streamlit import session_state as state
 from streamlit.components.v1 import html
@@ -7,7 +9,6 @@ import colibri
 import st_utility as ut
 from st_supabase import db
 from streamlit_shortcuts import add_keyboard_shortcuts
-from os import listdir
 try: from st_font_tool import font_tool
 except: from st_font_tool.st_font_tool import font_tool
 ##########################################
@@ -19,37 +20,40 @@ st.markdown(f'<style>{ut.read("style.css")}</style>', unsafe_allow_html=True)
 #Book state variable
 if 'book' not in state:
   state.book = colibri.Book()
-  state.book.init('static/clb/NEW.svg')
+  state.book.init('static/clb/ignota.clb')
+  state.book.update()
   state.book.run()
 #Other state variables
-ut.init_state({
-  'num_runs': 0,
-  'bool_saved': False,
-  'autosave_interval_sec': 20,
-  'font_char_selected': '',
-  'library': listdir('static/clb/'),
-  'phone_script_text_area_wkey': state.book.source['phone_replace'],
-  'phone_original_text_area_wkey': state.book.source['arr_book_page'][0],
-  'graph_script_text_area_wkey': state.book.source['graph_replace'],
-  'graph_original_text_area_wkey': state.book.source['arr_book_page'][0],
-})
-#Update num_runs
+def init_app_state(bool_first_time_only=True):
+  ut.init_state({
+    'num_runs': 0,
+    'bool_saved': False,
+    'autosave_interval_sec': 20,
+    'font_char_selected': '',
+    'library': sorted(os.listdir('static/clb/')),
+    'phone_script_text_area_wkey': state.book.source['phone_replace'],
+    'phone_original_text_area_wkey': state.book.source['arr_book_page'][0],
+    'graph_script_text_area_wkey': state.book.source['graph_replace'],
+    'graph_original_text_area_wkey': state.book.source['arr_book_page'][0],
+  }, bool_first_time_only=bool_first_time_only)
+  state.num_runs += 1
+init_app_state()
+with st.expander('{} runs'.format(state.num_runs)):
+  state.book
 #Set some color names
 #ut.num_spectrum_colors = 30
 #ut.set_colors({ 'gold': [2,3,8,8,8], 'brown': [2,-1] })
 #ut.show_colors()
 #Save button and hotkey
 with st.expander(':green[saved]' if state.bool_saved else ':orange[unsaved (alt+enter)]', expanded=True):
-  state.num_runs += 1
   def save():
     db.table('colibri_source').insert(
       [{'colibri_source': state.book.source}]
     ).execute()
     state.bool_saved = True
-  col0, col1, col2 = st.columns([1,1,1])
-  col0.write(':gray[{} runs]'.format(state.num_runs))
+  col0, col1 = st.columns([1,1])
+  col0.write('{}'.format(state.book.source['title']))
   col1.button('save', on_click=save)
-  col2.write('{}'.format(state.book.source['origin_file_url']))
   add_keyboard_shortcuts({
     'Alt+Enter': 'save',
   })
@@ -68,7 +72,9 @@ with account_tab:
 ##########################################
   def select_from_library():
     state.book.init('static/clb/' + state.account_library_text_input_wkey)
+    state.book.update()
     state.book.run()
+    init_app_state(bool_first_time_only=False)
   with st.expander('language', expanded=True):
     st.selectbox(
       label='your projects',
