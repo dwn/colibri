@@ -5,7 +5,7 @@ from streamlit import session_state as state
 from streamlit.components.v1 import html
 import pandas as pd
 import numpy as np
-import colibri
+import pycolibri
 import st_utility as ut
 from st_supabase import db
 from streamlit_shortcuts import add_keyboard_shortcuts
@@ -28,7 +28,7 @@ db.auth.sign_in_with_password(dict(email='danwnielsen@gmail.com', password='pass
 ##########################################
 #Book state variable
 if 'book' not in state:
-  state.book = colibri.Book()
+  state.book = pycolibri.Book()
   state.book.init('static/clb/ignota.clb')
   state.book.update()
   state.book.run()
