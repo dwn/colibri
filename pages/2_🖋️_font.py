@@ -12,13 +12,20 @@ from streamlit_shortcuts import add_keyboard_shortcuts
 try: from st_font_tool import font_tool
 except: from st_font_tool.st_font_tool import font_tool
 ##########################################
-# INIT
+# INIT APP
 ##########################################
 #App config
-if 'bool_configured' not in state:
-  st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
-  state.bool_configured = True
+st.set_page_config(page_title='Colibri', page_icon=':book:', layout="wide")
 st.markdown(f'<style>{ut.read("style.css")}</style>', unsafe_allow_html=True)
+##########################################
+# LOGIN
+##########################################
+#db.auth.sign_up(dict(email='danwnielsen@gmail.com', password='password', options=dict(data=dict(fname='dan',attribution='developing'))))
+db.auth.sign_in_with_password(dict(email='danwnielsen@gmail.com', password='password'))
+#st_supabase.auth.sign_out()
+##########################################
+# INIT STATE
+##########################################
 #Book state variable
 if 'book' not in state:
   state.book = colibri.Book()
@@ -28,6 +35,8 @@ if 'book' not in state:
 #Other state variables
 def init_app_state(bool_overwrite=False):
   ut.init_state({
+    'user': db.auth.get_user().user,
+    'session': db.auth.get_session(),
     'num_runs': 0,
     'bool_saved': False,
     'autosave_interval_sec': 20,
@@ -43,9 +52,18 @@ init_app_state()
 with st.expander('{} runs'.format(state.num_runs)):
   state.book
 #Set some color names
-#ut.num_spectrum_colors = 30
+ut.num_spectrum_colors = 12
 #ut.set_colors({ 'gold': [2,3,8,8,8], 'brown': [2,-1] })
-#ut.show_colors()
+ut.set_colors({
+  'red': [1],
+  'orange': [3],
+  'amber': [4],
+  'green': [6],
+  'sky': [8],
+  'blue': [9],
+  'purple': [11],
+})
+ut.show_colors()
 #Save button and hotkey
 with st.expander(':green[saved]' if state.bool_saved else ':orange[unsaved (alt+enter)]', expanded=True):
   def save():
@@ -53,8 +71,9 @@ with st.expander(':green[saved]' if state.bool_saved else ':orange[unsaved (alt+
       [{'colibri_source': state.book.source}]
     ).execute()
     state.bool_saved = True
+  state.user
   col0, col1 = st.columns([1,1])
-  col0.write('{}'.format(state.book.source['title']))
+  col0.write(state.book.source['title'])
   col1.button('save', on_click=save)
   add_keyboard_shortcuts({
     'Alt+Enter': 'save',
@@ -78,6 +97,8 @@ with account_tab:
     state.book.run()
     init_app_state(bool_overwrite=True)
   with st.expander('language', expanded=True):
+    st.button('create new project')
+    st.file_uploader('upload project', type=['clb'])
     st.selectbox(
       label='your projects',
       options=['english', 'russian'],
@@ -93,7 +114,7 @@ with account_tab:
       key='account_username_text_input_wkey')
     st.radio(
       label='mode',
-      options=['create','read','chat'],
+      options=['create', 'use'],
       key='account_mode_toggle_wkey')
 ##########################################
 with font_tab:

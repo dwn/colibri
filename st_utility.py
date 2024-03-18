@@ -55,6 +55,7 @@ def read(file_paths):
 ##########################################
 #Values referenced by spectrum()
 num_spectrum_colors = 7
+color = {}
 spectrum_code = [
     '610061', '640066', '67006a', '6a006f', '6d0073', '6f0077', '72007c', '740080', '760084', '780088', '79008d', '7b0091', '7c0095', '7e0099', '7f009d', '8000a1', '8100a5', '8100a9', '8200ad', '8200b1', '8300b5', '8300b9', '8300bc', '8300c0', '8200c4', '8200c8', '8100cc', '8100cf', '8000d3', '7f00d7', '7e00db', '7c00de', '7b00e2', '7900e6', '7800e9', '7600ed', '7400f1', '7100f4', '6f00f8', '6d00fb',
     '6a00ff', '6600ff', '6100ff', '5d00ff', '5900ff', '5400ff', '5000ff', '4b00ff', '4600ff', '4200ff', '3d00ff', '3800ff', '3300ff', '2e00ff', '2800ff', '2300ff', '1d00ff', '1700ff', '1100ff', '0a00ff', '0000ff', '000bff', '0013ff', '001bff', '0022ff', '0028ff', '002fff', '0035ff', '003bff', '0041ff', '0046ff', '004cff', '0051ff', '0057ff', '005cff', '0061ff', '0066ff', '006cff', '0071ff', '0076ff',
@@ -137,11 +138,12 @@ def set_colors(palette):
       color[key] = blended_color
 #Display palette colors and spectrum
 def show_colors():
-  st.markdown('###### color')
-  i = 0
-  for key, val in color.items():
-    st.markdown('<div class="color" style="background-color:{hex}; text-shadow:-1px -1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,1px 1px 0 #000">{name} | {index} | {hex}</div>'.format(name=key, index=i, hex=val), unsafe_allow_html=True)
-    i += 1
+  if color:
+    st.markdown('###### color')
+    i = 0
+    for key, val in color.items():
+      st.markdown('<div class="color" style="background-color:{hex}; text-shadow:-1px -1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,1px 1px 0 #000">{name} | {index} | {hex}</div>'.format(name=key, index=i, hex=val), unsafe_allow_html=True)
+      i += 1
   st.markdown('###### spectrum')
   for i in range(-1, num_spectrum_colors + 2):
     st.markdown('<div class="color" style="background-color:{hex}; text-shadow:-1px -1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,1px 1px 0 #000">{index} | {hex} | {nm} nm | {THz} THz</div>'.format(index=i, hex=spectrum(i), nm=spectrum(i, 'nm'), THz=spectrum(i, 'THz')), unsafe_allow_html=True)
